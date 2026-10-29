@@ -274,3 +274,56 @@ html[data-theme="dark"] .icon-button,html[data-theme="dark"] .nav-arrow{backgrou
 html[data-theme="dark"] .today-button{background:#ff3b30!important;color:#fff!important}
 html[data-theme="dark"] .add-deadline{background:#00d9f5!important;color:#160d24!important}
 html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{background:#ffe600!important;color:#160d24!important;border-color:#160d24!important}
+
+
+/* DARK MODE REPALETTE: plum, orchid, fuchsia and rose-pink, not teal/brown. */
+html[data-theme="dark"] body{background-color:#180b22!important;background-image:radial-gradient(circle,#ff75c8 1.4px,transparent 1.8px),linear-gradient(135deg,#180b22 0 23%,#3a124f 23% 43%,#64206e 43% 62%,#9b236f 62% 79%,#321047 79% 100%)!important;background-size:17px 17px,100% 100%!important;color:#fff0fb!important}
+html[data-theme="dark"] .app-shell{background:#24112f!important;border-color:#ff80cf!important;box-shadow:14px 14px 0 #d946ef!important}
+html[data-theme="dark"] .topbar{background:#40144f!important;border-color:#ff80cf!important}
+html[data-theme="dark"] .wordmark,html[data-theme="dark"] .wordmark *{color:#fff0fb!important;text-shadow:2px 2px #ff3fa4!important}
+html[data-theme="dark"] .local-tag{background:#26102f!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:3px 3px #d946ef!important}
+html[data-theme="dark"] .intro{background:#24112f!important;border-color:#ff3fa4!important}
+html[data-theme="dark"] .intro h1{color:#fff0fb!important;text-shadow:3px 3px #a855f7,7px 7px #ff3fa4!important}
+html[data-theme="dark"] .intro h1 em{color:#ff80cf!important;-webkit-text-stroke:1px #fff0fb!important;text-shadow:3px 3px #8b35ff!important}
+html[data-theme="dark"] .intro-copy,html[data-theme="dark"] .eyebrow{color:#ffe5f6!important}
+html[data-theme="dark"] .note-card{background:#54175e!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:9px 9px #ff3fa4!important}
+html[data-theme="dark"] .note-label{color:#ffb7e5!important}
+html[data-theme="dark"] #quickTasks{background-color:#21102b!important;background-image:repeating-linear-gradient(transparent 0 29px,rgba(255,224,246,.18) 29px 30px)!important;color:#fff0fb!important;border-color:#d946ef!important}
+html[data-theme="dark"] #quickTasks::placeholder{color:#d8a3d2!important}
+html[data-theme="dark"] .quick-task-row{background:#2b1238!important;color:#fff0fb!important;border-color:#ff65bd!important;box-shadow:4px 4px #a855f7!important}
+html[data-theme="dark"] .quick-task-date{color:#f5b8e7!important}
+html[data-theme="dark"] .quick-colour-grid{background:#1c0d27!important;border-color:#ff80cf!important;box-shadow:4px 4px #d946ef!important}
+html[data-theme="dark"] .workspace{background:#180b22!important;background-image:radial-gradient(#6e347a .9px,transparent 1.2px)!important}
+html[data-theme="dark"] .calendar-panel{background:#40144f!important;background-image:radial-gradient(#ff75c8 1.1px,transparent 1.3px)!important;border-color:#ff80cf!important;box-shadow:8px 8px #d946ef!important}
+html[data-theme="dark"] .calendar-head,html[data-theme="dark"] .month-row,html[data-theme="dark"] .month-row h2{background:#40144f!important;color:#fff0fb!important}
+html[data-theme="dark"] .weekdays{background:#ff65bd!important;color:#24112f!important;border-color:#ff80cf!important}
+html[data-theme="dark"] .calendar-grid{background:#d946ef!important;border-color:#d946ef!important}
+html[data-theme="dark"] .calendar-grid .day-cell,html[data-theme="dark"] .calendar-grid .day-cell.outside{background:#fff0fb!important;color:#24112f!important}
+html[data-theme="dark"] .calendar-grid .day-cell.has-deadlines,html[data-theme="dark"] .calendar-grid .day-cell.has-deadlines:nth-child(3n+1),html[data-theme="dark"] .calendar-grid .day-cell.has-deadlines:nth-child(3n+2),html[data-theme="dark"] .calendar-grid .day-cell.has-deadlines:nth-child(3n){background:var(--subject-a,#fff0fb)!important}
+html[data-theme="dark"] .calendar-grid .day-cell.selected{outline-color:#ff65bd!important}
+html[data-theme="dark"] .calendar-grid .day-cell.today{border-color:#ff65bd!important}
+html[data-theme="dark"] .side-panel{background:#24112f!important;color:#fff0fb!important;border-color:#d946ef!important;box-shadow:8px 8px #ff3fa4!important}
+html[data-theme="dark"] .side-head{background:#54175e!important;color:#fff0fb!important;border-color:#ff80cf!important}
+html[data-theme="dark"] .side-head h2,html[data-theme="dark"] .side-hint,html[data-theme="dark"] .deadline-meta,html[data-theme="dark"] .deadline-notes{color:#ffe5f6!important}
+html[data-theme="dark"] .deadline-card{background:#351442!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:4px 4px #d946ef!important}
+html[data-theme="dark"] .deadline-card h3{color:#fff0fb!important}
+html[data-theme="dark"] .edit-deadline{background:#ffb7e5!important;color:#24112f!important}
+html[data-theme="dark"] .delete-card-deadline{background:#ff3fa4!important;color:#fff!important}
+html[data-theme="dark"] .up-next{background:#64206e!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:6px 6px #d946ef!important}
+html[data-theme="dark"] .up-next-item{background:#2b1238!important;color:#fff0fb!important;border-color:#ff65bd!important}
+html[data-theme="dark"] .credits-panel{background:#7a1f61!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:8px 8px #d946ef!important}
+html[data-theme="dark"] .credits-copy,html[data-theme="dark"] .credits-copy h3,html[data-theme="dark"] .credits-copy p{color:#fff0fb!important}
+html[data-theme="dark"] .credits-links a{color:#fff0fb!important;border-color:#ffb7e5!important}
+html[data-theme="dark"] .footer{background:#40144f!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:6px 6px #ff3fa4!important}
+html[data-theme="dark"] .footer a{color:#ffb7e5!important}
+html[data-theme="dark"] .modal{background:#24112f!important;color:#fff0fb!important;border-color:#ff80cf!important;box-shadow:10px 10px #ff3fa4!important}
+html[data-theme="dark"] .modal-top{background:#40144f!important;color:#fff0fb!important;border-color:#d946ef!important}
+html[data-theme="dark"] .modal label{color:#fff0fb!important}
+html[data-theme="dark"] .modal input,html[data-theme="dark"] .modal textarea,html[data-theme="dark"] .modal select{background:#180b22!important;color:#fff0fb!important;border-color:#d946ef!important}
+html[data-theme="dark"] .subject-editor .subject-row{background:#2b1238!important;color:#fff0fb!important;border-color:#ff80cf!important}
+html[data-theme="dark"] .subject-name-input{background:#180b22!important;color:#fff0fb!important;border-color:#ff65bd!important}
+html[data-theme="dark"] .toast{background:#ffb7e5!important;color:#24112f!important;border-color:#d946ef!important}
+html[data-theme="dark"] .icon-button,html[data-theme="dark"] .nav-arrow{background:#ff80cf!important;color:#24112f!important}
+html[data-theme="dark"] .today-button{background:#d946ef!important;color:#fff!important}
+html[data-theme="dark"] .add-deadline{background:#ff65bd!important;color:#24112f!important}
+html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{background:#ffb7e5!important;color:#24112f!important;border-color:#24112f!important}
