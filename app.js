@@ -51,8 +51,9 @@ $("#selectedHint").textContent=selected===today()?"Today's deadlines, all in one
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
 if(!items.length){holder.innerHTML='<div class="empty-day">No tasks on this date yet.<br>Add a deadline when you are ready.</div>';return}
 items.forEach(x=>{const s=subj(x.subject),card=document.createElement("article");card.className="deadline-card";card.style.setProperty("--card-color",x.color||s.color);
-card.innerHTML='<div class="deadline-card-top"><h3>'+esc(x.title)+'</h3><button class="edit-deadline" type="button" aria-label="Edit deadline" title="Edit deadline">✎</button></div><div class="deadline-meta"><span>'+esc(s.name)+'</span><span class="urgency-label '+esc(x.urgency)+'">'+urgency(x.urgency)+'</span></div>'+(x.notes?'<p class="deadline-notes">'+esc(x.notes)+'</p>':"");
-card.querySelector("button").addEventListener("click",()=>openDeadline(x.id));holder.appendChild(card)})
+card.innerHTML='<div class="deadline-card-top"><h3>'+esc(x.title)+'</h3><div class="deadline-card-actions"><button class="edit-deadline" type="button" aria-label="Edit deadline" title="Edit deadline">✎</button><button class="delete-card-deadline" type="button" aria-label="Delete deadline" title="Delete deadline">×</button></div></div><div class="deadline-meta"><span>'+esc(s.name)+'</span><span class="urgency-label '+esc(x.urgency)+'">'+urgency(x.urgency)+'</span></div>'+(x.notes?'<p class="deadline-notes">'+esc(x.notes)+'</p>':"");
+card.querySelector(".edit-deadline").addEventListener("click",()=>openDeadline(x.id));
+card.querySelector(".delete-card-deadline").addEventListener("click",()=>{if(!confirm('Delete "'+x.title.replace(/"/g,'\\"')+'" from your deadlines?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==x.id);save();renderAll();toast("Deadline deleted.")});holder.appendChild(card)})
 }
 function renderUpNext(){
 const items=sorted(state.deadlines.filter(x=>x.date>=today())).slice(0,5);$("#upNextCount").textContent=items.length+" ITEM"+(items.length===1?"":"S");const holder=$("#upNextList");holder.innerHTML="";
