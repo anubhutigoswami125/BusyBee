@@ -8,8 +8,12 @@ BusyBee is a lightweight, browser-based calendar for tracking academic deadlines
 
 - Monthly calendar with previous, next, and today navigation
 - Add, edit, and delete deadlines
-- Subject labels and editable subject colours
+- Subject labels with editable names, six-digit hex colours, and paper-inspired swatch presets
+- Diagonal split-colour cells when two different subjects share a date
+- Light and dark themes, saved in the current browser
+- Keyboard navigation across the calendar grid with arrow keys and Enter
 - Separate urgency levels: normal, important, and critical
+- Dashed overdue borders and a distinct due-today ribbon
 - Selected-day deadline details and an upcoming-deadlines list
 - JSON backup and restore
 - Local-first storage using the browser's `localStorage`; no account or cloud sync
