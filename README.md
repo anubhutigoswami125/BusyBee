@@ -1,5 +1,7 @@
 # BusyBee 🐝
 
+🌼 **Live website:** [anubhutigoswami125.github.io/BusyBee](https://anubhutigoswami125.github.io/BusyBee/)
+
 **A scrapbook-inspired academic deadline calendar with full-cell subject colours and separate urgency indicators.**
 
 BusyBee is a lightweight, browser-based calendar for tracking academic deadlines. Choose a date, add a deadline, assign a subject and urgency level, and keep notes alongside it. Subject colours fill the calendar date cell, while urgency is indicated separately.
