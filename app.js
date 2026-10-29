@@ -3,14 +3,14 @@
 const $ = s => document.querySelector(s);
 const KEY = "busybee-v1";
 const defaults = [
-{id:"genetics",name:"Genetics",color:"#e8a7a6"},
-{id:"biochem",name:"Biochemistry",color:"#f5cc55"},
-{id:"micro",name:"Microbiology",color:"#b6c99a"},
-{id:"python",name:"Python",color:"#9ec5cf"},
-{id:"cpp",name:"C++",color:"#bcb1d9"},
-{id:"data",name:"Data Analysis",color:"#e6b58a"},
-{id:"english",name:"English / PEL",color:"#d7b8c9"},
-{id:"other",name:"Other",color:"#c6c1b1"}
+{id:"genetics",name:"Genetics",color:"#FF4F87"},
+{id:"biochem",name:"Biochemistry",color:"#FFD400"},
+{id:"micro",name:"Microbiology",color:"#35C759"},
+{id:"python",name:"Python",color:"#00C2FF"},
+{id:"cpp",name:"C++",color:"#9B5DE5"},
+{id:"data",name:"Data Analysis",color:"#FF7A00"},
+{id:"english",name:"English / PEL",color:"#F15BB5"},
+{id:"other",name:"Other",color:"#8D99AE"}
 ];
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function date(s){const a=s.split("-").map(Number);return new Date(a[0],a[1]-1,a[2],12)}
@@ -87,7 +87,7 @@ $("#closeSubjects").addEventListener("click",()=>$("#subjectsDialog").close());
 $("#doneSubjects").addEventListener("click",()=>{$("#subjectsDialog").close();renderAll()});
 function renderSubjectEditor(){
 const holder=$("#subjectEditor");holder.innerHTML="";
-const swatches=["#e8a7a6","#f5cc55","#b6c99a","#9ec5cf","#e6b58a","#d7b8c9","#c6c1b1","#c7b69a","#a9b6a0","#b7a9a1","#d7d0c3","#24251f"];
+const swatches=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#FF3B30","#00A896","#FFFFFF","#24251F"];
 state.subjects.forEach(s=>{
 const row=document.createElement("div");row.className="subject-row";
 row.innerHTML='<label class="subject-name-label">COURSE NAME<input class="subject-name-input" type="text" maxlength="36" value="'+esc(s.name)+'" aria-label="Course name"></label><label class="hex-label">HEX COLOUR<input class="subject-hex" type="text" maxlength="7" value="'+esc(s.color)+'" aria-label="Hex colour code"></label><button type="button" class="remove-subject" aria-label="Delete '+esc(s.name)+'" title="Delete subject">×</button><div class="swatch-row" aria-label="Paper-inspired colour presets">'+swatches.map(c=>'<button type="button" class="preset-swatch" data-colour="'+c+'" style="--swatch:'+c+'" aria-label="Use '+c+'"></button>').join("")+'</div>';
@@ -99,7 +99,7 @@ row.querySelector(".remove-subject").addEventListener("click",()=>{if(state.subj
 holder.appendChild(row)
 })
 }
-$("#addSubjectForm").addEventListener("submit",e=>{e.preventDefault();const name=$("#newSubjectName").value.trim();if(!name)return;if(state.subjects.some(s=>s.name.toLowerCase()===name.toLowerCase())){toast("That subject already has a colour.");return}const palette=["#e8a7a6","#f5cc55","#b6c99a","#9ec5cf","#bcb1d9","#e6b58a","#d7b8c9","#c6c1b1","#a9c9ad"],used=state.subjects.map(s=>s.color.toLowerCase()),color=palette.find(c=>!used.includes(c))||palette[state.subjects.length%palette.length];state.subjects.push({id:uid(),name,color});save();$("#newSubjectName").value="";renderSubjectEditor();renderOptions();renderAll();toast("Subject colour added.")});
+$("#addSubjectForm").addEventListener("submit",e=>{e.preventDefault();const name=$("#newSubjectName").value.trim();if(!name)return;if(state.subjects.some(s=>s.name.toLowerCase()===name.toLowerCase())){toast("That subject already has a colour.");return}const palette=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#FF3B30"],used=state.subjects.map(s=>s.color.toLowerCase()),color=palette.find(c=>!used.includes(c))||palette[state.subjects.length%palette.length];state.subjects.push({id:uid(),name,color});save();$("#newSubjectName").value="";renderSubjectEditor();renderOptions();renderAll();toast("Subject colour added.")});
 $("#themeToggle").addEventListener("click",()=>applyTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
 $("#calendarGrid").addEventListener("keydown",e=>{const cell=e.target.closest(".day-cell");if(!cell)return;let step=0;if(e.key==="ArrowLeft")step=-1;else if(e.key==="ArrowRight")step=1;else if(e.key==="ArrowUp")step=-7;else if(e.key==="ArrowDown")step=7;else return;e.preventDefault();const next=date(cell.dataset.date);next.setDate(next.getDate()+step);selected=iso(next);view=date(selected);renderAll();const target=[...$("#calendarGrid").querySelectorAll(".day-cell")].find(el=>el.dataset.date===selected);if(target)target.focus()});
 $("#exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({app:"BusyBee",version:1,exportedAt:new Date().toISOString(),...state},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="busybee-backup-"+today()+".json";a.click();URL.revokeObjectURL(url);toast("Backup downloaded.")});
