@@ -39,7 +39,8 @@ const d=new Date(start);d.setDate(start.getDate()+i);const key=iso(d),inMonth=d.
 const b=document.createElement("button");b.type="button";const colors=[...new Set(items.map(x=>x.color||subj(x.subject).color))].slice(0,3);b.className="day-cell"+(!inMonth?" outside":"")+(key===today()?" today":"")+(key===selected?" selected":"")+(items.length?" has-deadlines":"")+(items.some(x=>away(x.date)<0)?" overdue-cell":"")+(items.some(x=>x.date===today())?" due-today-cell":"");
 b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric"})+(items.length?", "+items.length+" deadlines":""));
 if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors[2])b.style.setProperty("--subject-c",colors[2]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);
-/* Deadline cells are intentionally color-only. */
+const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
+/* Keep only the date number; remove task labels, badges, and marker squares. */
 b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll()});grid.appendChild(b)
 }
 renderLegend()
