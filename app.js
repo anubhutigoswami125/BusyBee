@@ -28,9 +28,11 @@ function away(s){return Math.round((date(s)-date(today()))/86400000)}
 function rank(u){return ({critical:0,important:1,normal:2})[u]??2}
 function urgency(u){return ({critical:"HIGH STAKES",important:"NEEDS ATTENTION",normal:"COMING UP"})[u]||"COMING UP"}
 function sorted(a){return a.slice().sort((x,y)=>x.date.localeCompare(y.date)||rank(x.urgency)-rank(y.urgency)||x.title.localeCompare(y.title))}
-function renderLegend(){$("#legend").innerHTML=state.subjects.map(s=>'<span class="legend-item"><i class="legend-swatch" style="background:'+esc(s.color)+'"></i>'+esc(s.name)+'</span>').join("")}
+function renderLegend(){}
 function renderCalendar(){
 const y=view.getFullYear(),m=view.getMonth();$("#monthTitle").textContent=view.toLocaleDateString("en-IN",{month:"long",year:"numeric"});
+const monthPalette=[["#B612D0","#FFFFFF"],["#4AC912","#171717"],["#CA2E30","#FFFFFF"],["#2364ED","#FFFFFF"],["#FFE724","#171717"],["#FE3CB3","#171717"],["#4F0303","#FFF4D6"],["#880C12","#FFF4D6"],["#BA4545","#FFFFFF"],["#F0DFA3","#38230D"],["#C8970E","#171717"],["#D64343","#FFFFFF"]];
+const monthTone=monthPalette[m];const panel=$(".calendar-panel");panel.style.setProperty("--month-color",monthTone[0]);panel.style.setProperty("--month-ink",monthTone[1]);panel.dataset.month=String(m);
 const first=new Date(y,m,1,12),offset=(first.getDay()+6)%7,start=new Date(y,m,1-offset,12),grid=$("#calendarGrid");grid.innerHTML="";
 for(let i=0;i<42;i++){
 const d=new Date(start);d.setDate(start.getDate()+i);const key=iso(d),inMonth=d.getMonth()===m,items=sorted(state.deadlines.filter(x=>x.date===key)),primary=items.length?subj(items[0].subject):null;
@@ -38,10 +40,12 @@ const b=document.createElement("button");b.type="button";const subjectIds=[...ne
 b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric"})+(items.length?", "+items.length+" deadlines":""));
 if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);if(subjectIds.length>2)b.style.setProperty("--subject-count",String(subjectIds.length));
 const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
-if(items.length){const max=window.innerWidth<500?1:2;items.slice(0,max).forEach(x=>{const e=document.createElement("span");e.className="day-event"+(x.urgency==="critical"?" urgency-critical":x.urgency==="important"?" urgency-important":"");e.textContent=x.title;e.title=x.title;b.appendChild(e)});
-if(items.length>max){const more=document.createElement("span");more.className="more-events";more.textContent="+"+(items.length-max)+" MORE";b.appendChild(more)}
-const status=items.some(x=>away(x.date)<0)?"overdue":items.some(x=>away(x.date)<=3)?"soon":"";if(status){const f=document.createElement("i");f.className="urgency-flag"+(status==="soon"?" soon":"");f.title=status==="soon"?"Due within 3 days":"Overdue";b.appendChild(f)}
-}else if(inMonth){const mark=document.createElement("span");mark.className="empty-mark";mark.textContent="·";b.appendChild(mark)}
+if(items.length){
+const marker=document.createElement("span");marker.className="deadline-bloom";marker.setAttribute("aria-hidden","true");marker.textContent=items.length>1?"✿":"✿";b.appendChild(marker);
+const count=document.createElement("span");count.className="deadline-count";count.textContent=items.length===1?"1 PIN":items.length+" PINS";b.appendChild(count);
+const status=items.some(x=>away(x.date)<0)?"overdue":items.some(x=>away(x.date)<=3)?"soon":"";
+if(status){const flag=document.createElement("i");flag.className="urgency-flag"+(status==="soon"?" soon":"");flag.title=status==="soon"?"Due within 3 days":"Overdue";b.appendChild(flag)}
+}else if(inMonth){const mark=document.createElement("span");mark.className="empty-mark";mark.textContent="✿";b.appendChild(mark)}
 b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll()});grid.appendChild(b)
 }
 renderLegend()
