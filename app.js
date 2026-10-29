@@ -77,7 +77,51 @@ $("#deadlineTitle").value=x?x.title:"";$("#deadlineDate").value=x?x.date:selecte
 $("#prevMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1,12);renderCalendar()});
 $("#nextMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1,12);renderCalendar()});
 $("#todayBtn").addEventListener("click",()=>{selected=today();view=date(selected);renderAll()});
+
 $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
+// Quick capture: one scribbled line per task, with a date and an individual colour.
+const quickPalette=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#B612D0","#CA2E30","#2364ED","#4F0303","#880C12","#BA4545","#F0DFA3","#C8970E","#D64343","#FE3CB3"];
+let quickRows=[];
+function parseQuickLine(raw,index){
+const monthMap={jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
+const match=raw.match(/(\\d{1,2})(?:\\s*[-–]\\s*(\\d{1,2}))?\\s+(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)(?:\\s+(20\\d{2}))?/i);
+if(!match)return {raw,title:raw.trim(),dates:[],error:"Add a date like 30 oct",color:quickPalette[index%quickPalette.length]};
+const month=monthMap[match[3].toLowerCase()],year=Number(match[4]||view.getFullYear()),first=Number(match[1]),last=Number(match[2]||match[1]);
+if(first<1||first>31||last<first||last>31)return {raw,title:raw.replace(match[0],"").trim(),dates:[],error:"Check the day number",color:quickPalette[index%quickPalette.length]};
+let actualYear=year;if(!match[4]&&month<view.getMonth()-5)actualYear=year+1;
+const dates=[];for(let day=first;day<=last;day++){const dt=new Date(actualYear,month,day,12);if(dt.getMonth()!==month)return {raw,title:raw.replace(match[0],"").trim(),dates:[],error:"That date does not exist",color:quickPalette[index%quickPalette.length]};dates.push(iso(dt))}
+const title=raw.replace(match[0],"").replace(/\\s+/g," ").replace(/[,:-]+$/,"").trim();
+const subject=state.subjects.find(s=>title.toLowerCase().includes(s.name.toLowerCase()))||state.subjects.find(s=>s.id==="other")||state.subjects[0];
+return {raw,title:title||raw.trim(),dates,subject:subject&&subject.id,color:(subject&&subject.color)||quickPalette[index%quickPalette.length],error:title?"":"Add a task name"};
+}
+function renderQuickPreview(){
+const area=$("#quickTasks"),holder=$("#quickTaskPreview");if(!area||!holder)return;
+const lines=area.value.split(/\\n/).map(x=>x.trim()).filter(Boolean);quickRows=lines.map(parseQuickLine);holder.innerHTML="";
+if(!quickRows.length){holder.innerHTML='<p class="quick-help">One task per line. Add a date, then pick its colour.</p>';return}
+quickRows.forEach((row,index)=>{
+const item=document.createElement("div");item.className="quick-task-row"+(row.error?" needs-date":"");
+const input=document.createElement("input");input.type="color";input.className="quick-colour";input.value=/^#[0-9a-f]{6}$/i.test(row.color)?row.color:quickPalette[index%quickPalette.length];input.setAttribute("aria-label","Choose colour for "+row.title);input.title="Pick this task's colour";
+input.addEventListener("input",()=>{row.color=input.value;item.style.setProperty("--quick-color",row.color)});
+item.style.setProperty("--quick-color",input.value);
+const copy=document.createElement("span");copy.className="quick-task-copy";copy.textContent=row.title||row.raw;
+const dateLabel=document.createElement("small");dateLabel.className="quick-task-date";dateLabel.textContent=row.error?row.error:row.dates.length===1?pretty(row.dates[0]):pretty(row.dates[0])+" to "+pretty(row.dates[row.dates.length-1]);
+item.append(copy,dateLabel,input);holder.appendChild(item)
+})
+}
+$("#quickTasks").addEventListener("input",renderQuickPreview);
+$("#quickTasksDone").addEventListener("click",()=>{
+renderQuickPreview();if(!quickRows.length){toast("Write at least one task first.");return}
+const invalid=quickRows.find(x=>x.error||!x.dates.length);if(invalid){toast("Add a task name and date to every line first.");return}
+let added=0;
+quickRows.forEach(row=>row.dates.forEach(day=>{
+const existing=state.deadlines.find(x=>x.date===day&&x.title.toLowerCase()===row.title.toLowerCase());
+if(existing){existing.color=row.color;if(row.subject)existing.subject=row.subject}
+else state.deadlines.push({id:uid(),title:row.title,date:day,subject:row.subject||(state.subjects[0]||{}).id,color:row.color,urgency:"normal",notes:"",createdAt:new Date().toISOString()});
+added++
+}));
+save();const latest=quickRows[quickRows.length-1];selected=latest.dates[0];view=date(selected);$("#quickTasks").value="";renderAll();toast(added+" task date"+(added===1?"":"s")+" added to your calendar.")
+});
+
 $("#closeDeadline").addEventListener("click",()=>$("#deadlineDialog").close());
 $("#deadlineForm").addEventListener("submit",e=>{
 e.preventDefault();const data={title:$("#deadlineTitle").value.trim(),date:$("#deadlineDate").value,subject:$("#deadlineSubject").value,urgency:$("#deadlineUrgency").value,notes:$("#deadlineNotes").value.trim()};
