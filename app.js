@@ -100,12 +100,13 @@ const lines=area.value.split(/\n/).map(x=>x.trim()).filter(Boolean);const previo
 if(!quickRows.length){holder.innerHTML='<p class="quick-help">One task per line. Add a date, then pick its colour.</p>';return}
 quickRows.forEach((row,index)=>{
 const item=document.createElement("div");item.className="quick-task-row"+(row.error?" needs-date":"");
-const input=document.createElement("input");input.type="color";input.className="quick-colour";input.value=/^#[0-9a-f]{6}$/i.test(row.color)?row.color:quickPalette[index%quickPalette.length];input.setAttribute("aria-label","Choose colour for "+row.title);input.title="Pick this task's colour";
-input.addEventListener("input",()=>{row.color=input.value;item.style.setProperty("--quick-color",row.color)});
-item.style.setProperty("--quick-color",input.value);
+const chosen=/^#[0-9a-f]{6}$/i.test(row.color)?row.color:quickPalette[index%quickPalette.length];
+item.style.setProperty("--quick-color",chosen);
 const copy=document.createElement("span");copy.className="quick-task-copy";copy.textContent=row.title||row.raw;
 const dateLabel=document.createElement("small");dateLabel.className="quick-task-date";dateLabel.textContent=row.error?row.error:row.dates.length===1?pretty(row.dates[0]):pretty(row.dates[0])+" to "+pretty(row.dates[row.dates.length-1]);
-item.append(copy,dateLabel,input);holder.appendChild(item)
+const picker=document.createElement("div");picker.className="quick-colour-grid";picker.setAttribute("role","group");picker.setAttribute("aria-label","Choose a colour for "+row.title);
+quickPalette.forEach(color=>{const swatch=document.createElement("button");swatch.type="button";swatch.className="quick-colour-swatch"+(color.toLowerCase()===chosen.toLowerCase()?" active":"");swatch.style.setProperty("--swatch-color",color);swatch.setAttribute("aria-label","Choose "+color);swatch.title=color;swatch.addEventListener("click",()=>{row.color=color;item.style.setProperty("--quick-color",color);picker.querySelectorAll("button").forEach(button=>button.classList.toggle("active",button===swatch))});picker.appendChild(swatch)});
+item.append(copy,dateLabel,picker);holder.appendChild(item)
 })
 }
 $("#quickTasks").addEventListener("input",renderQuickPreview);
