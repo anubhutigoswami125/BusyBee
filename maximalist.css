@@ -29,3 +29,24 @@ html[data-theme="dark"] .app-shell{background:#34271d;border-color:#ffcc45}html[
 html[data-theme="dark"] .note-card{background:#c8970e;border-color:#ffcc45}html[data-theme="dark"] #quickTasks{background:#34271d;color:#fff1bd;border-color:#ffcc45}html[data-theme="dark"] .quick-task-row{background:#34271d;color:#fff1bd;border-color:#ffcc45}
 html[data-theme="dark"] .day-cell:nth-child(3n+1){background:var(--month-accent)}html[data-theme="dark"] .day-cell:nth-child(3n+2){background:var(--month-color)}html[data-theme="dark"] .day-cell:nth-child(3n){background:var(--month-deep)}html[data-theme="dark"] .day-cell.has-deadlines{background:var(--subject-color,var(--subject-a,var(--month-color)))}
 html[data-theme="dark"] .credits-panel{background:#67202b;border-color:#ffcc45}html[data-theme="dark"] .side-panel{background:#4f0303;border-color:#ffcc45}html[data-theme="dark"] .deadline-card{background:#34271d;color:#fff1bd;border-color:#ffcc45}html[data-theme="dark"] .subject-row{background:#34271d;border-color:#ffcc45}html[data-theme="dark"] .subject-name-input{background:#4f0303;color:#fff1bd;border-color:#ffcc45}
+
+/* Calendar readability: keep the date grid paper-white; month palettes frame it. */
+.calendar-panel{background:var(--month-color,#8ED1FC)!important;background-image:radial-gradient(circle at 12px 12px,var(--month-accent,#EC008C) 0 4px,transparent 4.5px),linear-gradient(135deg,var(--month-color,#8ED1FC) 0 36%,var(--month-accent,#EC008C) 36% 53%,var(--month-deep,#1B365D) 53% 68%,var(--month-color,#8ED1FC) 68%)!important}
+.day-cell,.day-cell:nth-child(3n+1),.day-cell:nth-child(3n+2),.day-cell:nth-child(3n){background:#fff!important;color:#24251f!important;box-shadow:2px 2px 0 var(--month-deep,#1B365D);border:1px solid #d8d8d8}
+.day-cell.outside{background:#f4f4f4!important;color:#aaa!important;opacity:.7}
+.day-cell .day-number{color:#24251f;background:transparent;border:0;padding:2px 4px}
+.day-cell.has-deadlines{background:#fff!important}
+.day-cell.has-deadlines[style*="--subject-b"]{background:linear-gradient(135deg,var(--subject-a) 0 49%,var(--subject-b) 50% 100%)!important}
+.day-cell.has-deadlines[style*="--subject-c"]{background:linear-gradient(135deg,var(--subject-a) 0 33%,var(--subject-b) 34% 66%,var(--subject-c) 67% 100%)!important}
+.day-cell.has-deadlines .day-number{background:#fff;color:#222;border:1px solid #222;padding:2px 4px}
+.task-colour-stack{display:flex;align-items:center;justify-content:center;flex:1;min-height:24px;padding-top:4px}
+.task-colour-stack i{width:23px;height:23px;transform:rotate(45deg);margin-left:calc(var(--chip-index)*-5px);border:2px solid #fff;outline:1px solid #222;box-shadow:1px 1px 0 #222}
+.deadline-count{background:#fff;color:#222;border:1px solid #333}
+.empty-mark{display:none!important}
+.subject-hexagon,.quick-colour{appearance:none;-webkit-appearance:none;width:34px!important;height:34px!important;padding:0!important;border:2px solid #24251f!important;border-radius:0!important;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);overflow:hidden;cursor:pointer;background:var(--quick-color,#ff4f87)}
+.subject-hexagon::-webkit-color-swatch-wrapper,.quick-colour::-webkit-color-swatch-wrapper{padding:0}
+.subject-hexagon::-webkit-color-swatch,.quick-colour::-webkit-color-swatch{border:0;border-radius:0}
+.subject-hexagon::-moz-color-swatch,.quick-colour::-moz-color-swatch{border:0;border-radius:0}
+#manageSubjects{display:none!important}
+html[data-theme="dark"] .day-cell,html[data-theme="dark"] .day-cell:nth-child(3n+1),html[data-theme="dark"] .day-cell:nth-child(3n+2),html[data-theme="dark"] .day-cell:nth-child(3n){background:#fff!important;color:#24251f!important}
+html[data-theme="dark"] .day-cell.outside{background:#f4f4f4!important;color:#aaa!important}
