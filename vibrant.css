@@ -1,0 +1,47 @@
+/* BusyBee: vivid subject colours, preserved in both themes */
+:root {
+  --yellow: #FFD400;
+  --red: #FF3B30;
+  --green: #35C759;
+  --pink: #FF4F87;
+  --lilac: #9B5DE5;
+  --blue: #00C2FF;
+}
+.intro h1 em { color: #E83E73; }
+html[data-theme="dark"] .intro h1 em { color: #FF79A8; }
+html[data-theme="dark"] .day-cell.has-deadlines {
+  background: var(--subject-color, var(--subject-a, #FFD400));
+  color: #171717;
+  border-color: #777;
+}
+html[data-theme="dark"] .day-cell.has-deadlines[style*="--subject-b"] {
+  background: linear-gradient(155deg, var(--subject-a) 0 49.5%, var(--subject-b) 50% 100%);
+  color: #171717;
+}
+.day-cell.has-deadlines .day-event {
+  background: #ffffffc7;
+  color: #171717;
+  border-left-color: #171717;
+}
+html[data-theme="dark"] .day-cell.has-deadlines .day-event {
+  background: #ffffffd9;
+  color: #171717;
+  border-left-color: #171717;
+}
+html[data-theme="dark"] .legend-swatch { border-color: #ffffff66; }
+html[data-theme="dark"] .up-next-date { color: #171717; }
+html[data-theme="dark"] .deadline-card {
+  border-left-color: var(--card-color, #FFD400);
+}
+html[data-theme="dark"] .day-cell.overdue-cell {
+  border: 2px dashed #FF453A;
+}
+html[data-theme="dark"] .day-cell.due-today-cell:not(.overdue-cell):before {
+  background: #171717;
+  color: #FFFFFF;
+}
+.preset-swatch { box-shadow: inset 0 0 0 1px #00000012; }
+.preset-swatch:hover { transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) {
+  .day-cell, .toast { transition: none; }
+}
