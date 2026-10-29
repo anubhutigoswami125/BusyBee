@@ -84,19 +84,19 @@ const quickPalette=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00",
 let quickRows=[];
 function parseQuickLine(raw,index){
 const monthMap={jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
-const match=raw.match(/(\\d{1,2})(?:\\s*[-–]\\s*(\\d{1,2}))?\\s+(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)(?:\\s+(20\\d{2}))?/i);
+const match=raw.match(/(\d{1,2})(?:\s*[-–]\s*(\d{1,2}))?\s+(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)(?:\s+(20\d{2}))?/i);
 if(!match)return {raw,title:raw.trim(),dates:[],error:"Add a date like 30 oct",color:quickPalette[index%quickPalette.length]};
 const month=monthMap[match[3].toLowerCase()],year=Number(match[4]||view.getFullYear()),first=Number(match[1]),last=Number(match[2]||match[1]);
 if(first<1||first>31||last<first||last>31)return {raw,title:raw.replace(match[0],"").trim(),dates:[],error:"Check the day number",color:quickPalette[index%quickPalette.length]};
 let actualYear=year;if(!match[4]&&month<view.getMonth()-5)actualYear=year+1;
 const dates=[];for(let day=first;day<=last;day++){const dt=new Date(actualYear,month,day,12);if(dt.getMonth()!==month)return {raw,title:raw.replace(match[0],"").trim(),dates:[],error:"That date does not exist",color:quickPalette[index%quickPalette.length]};dates.push(iso(dt))}
-const title=raw.replace(match[0],"").replace(/\\s+/g," ").replace(/[,:-]+$/,"").trim();
+const title=raw.replace(match[0],"").replace(/\s+/g," ").replace(/[,:-]+$/,"").trim();
 const subject=state.subjects.find(s=>title.toLowerCase().includes(s.name.toLowerCase()))||state.subjects.find(s=>s.id==="other")||state.subjects[0];
 return {raw,title:title||raw.trim(),dates,subject:subject&&subject.id,color:(subject&&subject.color)||quickPalette[index%quickPalette.length],error:title?"":"Add a task name"};
 }
 function renderQuickPreview(){
 const area=$("#quickTasks"),holder=$("#quickTaskPreview");if(!area||!holder)return;
-const lines=area.value.split(/\\n/).map(x=>x.trim()).filter(Boolean);quickRows=lines.map(parseQuickLine);holder.innerHTML="";
+const lines=area.value.split(/\n/).map(x=>x.trim()).filter(Boolean);quickRows=lines.map(parseQuickLine);holder.innerHTML="";
 if(!quickRows.length){holder.innerHTML='<p class="quick-help">One task per line. Add a date, then pick its colour.</p>';return}
 quickRows.forEach((row,index)=>{
 const item=document.createElement("div");item.className="quick-task-row"+(row.error?" needs-date":"");
