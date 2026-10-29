@@ -96,7 +96,7 @@ return {raw,title:title||raw.trim(),dates,subject:subject&&subject.id,color:(sub
 }
 function renderQuickPreview(){
 const area=$("#quickTasks"),holder=$("#quickTaskPreview");if(!area||!holder)return;
-const lines=area.value.split(/\n/).map(x=>x.trim()).filter(Boolean);quickRows=lines.map(parseQuickLine);holder.innerHTML="";
+const lines=area.value.split(/\n/).map(x=>x.trim()).filter(Boolean);const previousColours=new Map(quickRows.map(x=>[x.raw,x.color]));quickRows=lines.map(parseQuickLine);quickRows.forEach(x=>{if(previousColours.has(x.raw))x.color=previousColours.get(x.raw)});holder.innerHTML="";
 if(!quickRows.length){holder.innerHTML='<p class="quick-help">One task per line. Add a date, then pick its colour.</p>';return}
 quickRows.forEach((row,index)=>{
 const item=document.createElement("div");item.className="quick-task-row"+(row.error?" needs-date":"");
