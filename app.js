@@ -31,7 +31,7 @@ function sorted(a){return a.slice().sort((x,y)=>x.date.localeCompare(y.date)||ra
 function renderLegend(){}
 function renderCalendar(){
 const y=view.getFullYear(),m=view.getMonth();$("#monthTitle").textContent=view.toLocaleDateString("en-IN",{month:"long",year:"numeric"});
-const monthPalettes=[["#B612D0","#F8B8FF","#6B1AA8","#FFFFFF"],["#4AC912","#D9FF8F","#167D2B","#171717"],["#CA2E30","#FFB4A8","#7E101A","#FFFFFF"],["#2364ED","#7AD8FF","#172C91","#FFFFFF"],["#FFE724","#FF9F1C","#FFF5A5","#171717"],["#FE3CB3","#FFB5D9","#9C175D","#171717"],["#4F0303","#880C12","#D64343","#FFF4D6"],["#880C12","#BA4545","#F4A6A6","#FFF4D6"],["#BA4545","#F0DFA3","#7C1D24","#FFFFFF"],["#F0DFA3","#C8970E","#FFE9A8","#38230D"],["#C8970E","#4AC912","#4F0303","#171717"],["#D64343","#FE3CB3","#F0DFA3","#FFFFFF"]];
+const monthPalettes=[["#8ED1FC","#EC008C","#1B365D","#FF6F61"],["#FF4D88","#C80036","#00C2D1","#FFD700"],["#7CB342","#59C3C3","#E5A93C","#FF85A1"],["#FFE600","#D8B4F8","#98FF98","#FFB7B2"],["#00875A","#D81B60","#FFF176","#1B4D3E"],["#00A896","#FF6B35","#FF8811","#FFD166"],["#0055A5","#FF1D25","#FFEB3B","#E040FB"],["#FF9E7D","#FFC107","#00B4D8","#8AC926"],["#D4AF37","#005B60","#C85A17","#8E1600"],["#FF6700","#4A154B","#121212","#00F5D4"],["#800020","#E09F3E","#556B2F","#9E2A2B"],["#0B5345","#D32F2F","#D4AF37","#E0F7FA"]];
 const monthTone=monthPalettes[m];const panel=$(".calendar-panel");panel.style.setProperty("--month-color",monthTone[0]);panel.style.setProperty("--month-accent",monthTone[1]);panel.style.setProperty("--month-deep",monthTone[2]);panel.style.setProperty("--month-ink",monthTone[3]);panel.dataset.month=String(m);
 const first=new Date(y,m,1,12),offset=(first.getDay()+6)%7,start=new Date(y,m,1-offset,12),grid=$("#calendarGrid");grid.innerHTML="";
 for(let i=0;i<42;i++){
@@ -41,11 +41,11 @@ b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric
 if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors[2])b.style.setProperty("--subject-c",colors[2]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);
 const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
 if(items.length){
-const stack=document.createElement("span");stack.className="task-colour-stack";stack.setAttribute("aria-hidden","true");colors.forEach((color,index)=>{const chip=document.createElement("i");chip.style.setProperty("--chip-color",color);chip.style.setProperty("--chip-index",String(index));stack.appendChild(chip)});b.appendChild(stack);
+b.style.setProperty("--task-count",String(items.length));const stack=document.createElement("span");stack.className="task-colour-stack";stack.setAttribute("aria-hidden","true");colors.forEach((color,index)=>{const chip=document.createElement("i");chip.style.setProperty("--chip-color",color);chip.style.setProperty("--chip-index",String(index));stack.appendChild(chip)});b.appendChild(stack);
 const count=document.createElement("span");count.className="deadline-count";count.textContent=items.length===1?"1 TASK":items.length+" TASKS";b.appendChild(count);
 const status=items.some(x=>away(x.date)<0)?"overdue":items.some(x=>away(x.date)<=3)?"soon":"";
 if(status){const flag=document.createElement("i");flag.className="urgency-flag"+(status==="soon"?" soon":"");flag.title=status==="soon"?"Due within 3 days":"Overdue";b.appendChild(flag)}
-}else if(inMonth){const mark=document.createElement("span");mark.className="empty-mark";mark.textContent="✿";b.appendChild(mark)}
+}
 b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll()});grid.appendChild(b)
 }
 renderLegend()
