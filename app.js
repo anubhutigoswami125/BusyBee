@@ -80,7 +80,7 @@ $("#todayBtn").addEventListener("click",()=>{selected=today();view=date(selected
 
 $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
 // Quick capture: one scribbled line per task, with a date and an individual colour.
-const quickPalette=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#B612D0","#CA2E30","#2364ED","#4F0303","#880C12","#BA4545","#F0DFA3","#C8970E","#D64343","#FE3CB3"];
+const quickPalette=["#8ED1FC","#EC008C","#1B365D","#FF6F61","#FF4D88","#C80036","#00C2D1","#FFD700","#7CB342","#59C3C3","#E5A93C","#FF85A1","#FFE600","#D8B4F8","#98FF98","#FFB7B2","#00875A","#D81B60","#FFF176","#1B4D3E","#00A896","#FF6B35","#FF8811","#FFD166","#0055A5","#FF1D25","#FFEB3B","#E040FB","#FF9E7D","#FFC107","#00B4D8","#8AC926","#D4AF37","#005B60","#C85A17","#8E1600","#FF6700","#4A154B","#121212","#00F5D4","#800020","#E09F3E","#556B2F","#9E2A2B","#0B5345","#D32F2F","#D4AF37","#E0F7FA"];
 let quickRows=[];
 function parseQuickLine(raw,index){
 const monthMap={jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
