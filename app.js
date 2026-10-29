@@ -54,7 +54,7 @@ function renderDay(){
 $("#selectedHeading").textContent=pretty(selected,{weekday:"short",month:"short",day:"numeric"});
 $("#selectedHint").textContent=selected===today()?"Today's deadlines, all in one place.":away(selected)<0?"Past date. Check what slipped, without judgement.":away(selected)===1?"Tomorrow's deadlines.":pretty(selected,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
-if(!items.length){holder.innerHTML='<div class="empty-day">Nothing pinned here yet.<br>Add a deadline when you are ready.</div>';return}
+if(!items.length){holder.innerHTML='<div class="empty-day">No tasks on this date yet.<br>Add a deadline when you are ready.</div>';return}
 items.forEach(x=>{const s=subj(x.subject),card=document.createElement("article");card.className="deadline-card";card.style.setProperty("--card-color",x.color||s.color);
 card.innerHTML='<div class="deadline-card-top"><h3>'+esc(x.title)+'</h3><button class="edit-deadline" type="button" aria-label="Edit deadline" title="Edit deadline">✎</button></div><div class="deadline-meta"><span>'+esc(s.name)+'</span><span class="urgency-label '+esc(x.urgency)+'">'+urgency(x.urgency)+'</span></div>'+(x.notes?'<p class="deadline-notes">'+esc(x.notes)+'</p>':"");
 card.querySelector("button").addEventListener("click",()=>openDeadline(x.id));holder.appendChild(card)})
@@ -71,7 +71,7 @@ function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map
 function renderAll(){renderCalendar();renderDay();renderUpNext();renderQuickPreview()}
 function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2800)}
 function openDeadline(id){
-editing=id;const x=id?state.deadlines.find(d=>d.id===id):null;$("#deadlineForm").reset();$("#formTitle").innerHTML=(x?"Edit deadline":"Add a deadline")+'<span class="dot">.</span>';$("#formEyebrow").textContent=x?"MAKE A CHANGE":"PIN IT DOWN";
+editing=id;const x=id?state.deadlines.find(d=>d.id===id):null;$("#deadlineForm").reset();$("#formTitle").innerHTML=(x?"Edit deadline":"Add a deadline")+'<span class="dot">.</span>';$("#formEyebrow").textContent=x?"MAKE A CHANGE":"ADD A TASK";
 $("#deadlineTitle").value=x?x.title:"";$("#deadlineDate").value=x?x.date:selected;renderOptions(x?x.subject:(state.subjects[0]||{}).id);$("#deadlineUrgency").value=x?(x.urgency||"normal"):"normal";$("#deadlineNotes").value=x?(x.notes||""):"";$("#deleteDeadline").hidden=!x;$("#deadlineDialog").showModal();setTimeout(()=>$("#deadlineTitle").focus(),40)
 }
 $("#prevMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1,12);renderCalendar()});
@@ -127,7 +127,7 @@ $("#deadlineForm").addEventListener("submit",e=>{
 e.preventDefault();const data={title:$("#deadlineTitle").value.trim(),date:$("#deadlineDate").value,subject:$("#deadlineSubject").value,urgency:$("#deadlineUrgency").value,notes:$("#deadlineNotes").value.trim()};
 if(!data.title||!data.date||!data.subject){toast("Add a title, date, and subject first.");return}
 if(editing){const i=state.deadlines.findIndex(x=>x.id===editing);if(i>=0)state.deadlines[i]={...state.deadlines[i],...data}}else state.deadlines.push({id:uid(),...data,createdAt:new Date().toISOString()});
-selected=data.date;view=date(data.date);save();$("#deadlineDialog").close();renderAll();toast(editing?"Deadline updated.":"Deadline pinned to your calendar.")
+selected=data.date;view=date(data.date);save();$("#deadlineDialog").close();renderAll();toast(editing?"Deadline updated.":"Task added to your calendar.")
 });
 $("#deleteDeadline").addEventListener("click",()=>{if(!editing)return;const x=state.deadlines.find(d=>d.id===editing);if(!confirm('Delete "'+(x?x.title:"this deadline")+'"?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==editing);save();$("#deadlineDialog").close();renderAll();toast("Deadline deleted.")});
 $("#manageSubjects").addEventListener("click",()=>{$("#subjectsDialog").showModal();renderSubjectEditor()});
