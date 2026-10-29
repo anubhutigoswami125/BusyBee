@@ -39,13 +39,7 @@ const d=new Date(start);d.setDate(start.getDate()+i);const key=iso(d),inMonth=d.
 const b=document.createElement("button");b.type="button";const colors=[...new Set(items.map(x=>x.color||subj(x.subject).color))].slice(0,3);b.className="day-cell"+(!inMonth?" outside":"")+(key===today()?" today":"")+(key===selected?" selected":"")+(items.length?" has-deadlines":"")+(items.some(x=>away(x.date)<0)?" overdue-cell":"")+(items.some(x=>x.date===today())?" due-today-cell":"");
 b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric"})+(items.length?", "+items.length+" deadlines":""));
 if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors[2])b.style.setProperty("--subject-c",colors[2]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);
-const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
-if(items.length){
-b.style.setProperty("--task-count",String(items.length));const stack=document.createElement("span");stack.className="task-colour-stack";stack.setAttribute("aria-hidden","true");colors.forEach((color,index)=>{const chip=document.createElement("i");chip.style.setProperty("--chip-color",color);chip.style.setProperty("--chip-index",String(index));stack.appendChild(chip)});b.appendChild(stack);
-const count=document.createElement("span");count.className="deadline-count";count.textContent=items.length===1?"1 TASK":items.length+" TASKS";b.appendChild(count);
-const status=items.some(x=>away(x.date)<0)?"overdue":items.some(x=>away(x.date)<=3)?"soon":"";
-if(status){const flag=document.createElement("i");flag.className="urgency-flag"+(status==="soon"?" soon":"");flag.title=status==="soon"?"Due within 3 days":"Overdue";b.appendChild(flag)}
-}
+/* Deadline cells are intentionally color-only. */
 b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll()});grid.appendChild(b)
 }
 renderLegend()
