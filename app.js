@@ -18,7 +18,7 @@ function today(){return iso(new Date())}
 function pretty(s,opts){return date(s).toLocaleDateString("en-IN",opts||{weekday:"short",month:"short",day:"numeric"})}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines))return x}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[]}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const c=String(s.color||"").toLowerCase();if(migration[c])s.color=migration[c]});return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[]}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
 const THEME_KEY="busybee-theme-v1";
 function applyTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem(THEME_KEY,theme);const b=$("#themeToggle");if(b){b.innerHTML=(theme==="dark"?"☼":"◐") + " <span>"+(theme==="dark"?"LIGHT":"DARK")+"</span>";b.setAttribute("aria-label","Switch to "+(theme==="dark"?"light":"dark")+" mode");b.title="Switch to "+(theme==="dark"?"light":"dark")+" mode"}}
