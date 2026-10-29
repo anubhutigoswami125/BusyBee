@@ -130,7 +130,7 @@ if(editing){const i=state.deadlines.findIndex(x=>x.id===editing);if(i>=0)state.d
 selected=data.date;view=date(data.date);save();$("#deadlineDialog").close();renderAll();toast(editing?"Deadline updated.":"Task added to your calendar.")
 });
 $("#deleteDeadline").addEventListener("click",()=>{if(!editing)return;const x=state.deadlines.find(d=>d.id===editing);if(!confirm('Delete "'+(x?x.title:"this deadline")+'"?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==editing);save();$("#deadlineDialog").close();renderAll();toast("Deadline deleted.")});
-$("#manageSubjects").addEventListener("click",()=>{$("#subjectsDialog").showModal();renderSubjectEditor()});
+const manageSubjectsButton=$("#manageSubjects");if(manageSubjectsButton)manageSubjectsButton.addEventListener("click",()=>{$("#subjectsDialog").showModal();renderSubjectEditor()});
 $("#closeSubjects").addEventListener("click",()=>$("#subjectsDialog").close());
 $("#doneSubjects").addEventListener("click",()=>{$("#subjectsDialog").close();renderAll()});
 function renderSubjectEditor(){
