@@ -31,18 +31,18 @@ function sorted(a){return a.slice().sort((x,y)=>x.date.localeCompare(y.date)||ra
 function renderLegend(){}
 function renderCalendar(){
 const y=view.getFullYear(),m=view.getMonth();$("#monthTitle").textContent=view.toLocaleDateString("en-IN",{month:"long",year:"numeric"});
-const monthPalette=[["#B612D0","#FFFFFF"],["#4AC912","#171717"],["#CA2E30","#FFFFFF"],["#2364ED","#FFFFFF"],["#FFE724","#171717"],["#FE3CB3","#171717"],["#4F0303","#FFF4D6"],["#880C12","#FFF4D6"],["#BA4545","#FFFFFF"],["#F0DFA3","#38230D"],["#C8970E","#171717"],["#D64343","#FFFFFF"]];
-const monthTone=monthPalette[m];const panel=$(".calendar-panel");panel.style.setProperty("--month-color",monthTone[0]);panel.style.setProperty("--month-ink",monthTone[1]);panel.dataset.month=String(m);
+const monthPalettes=[["#B612D0","#F8B8FF","#6B1AA8","#FFFFFF"],["#4AC912","#D9FF8F","#167D2B","#171717"],["#CA2E30","#FFB4A8","#7E101A","#FFFFFF"],["#2364ED","#7AD8FF","#172C91","#FFFFFF"],["#FFE724","#FF9F1C","#FFF5A5","#171717"],["#FE3CB3","#FFB5D9","#9C175D","#171717"],["#4F0303","#880C12","#D64343","#FFF4D6"],["#880C12","#BA4545","#F4A6A6","#FFF4D6"],["#BA4545","#F0DFA3","#7C1D24","#FFFFFF"],["#F0DFA3","#C8970E","#FFE9A8","#38230D"],["#C8970E","#4AC912","#4F0303","#171717"],["#D64343","#FE3CB3","#F0DFA3","#FFFFFF"]];
+const monthTone=monthPalettes[m];const panel=$(".calendar-panel");panel.style.setProperty("--month-color",monthTone[0]);panel.style.setProperty("--month-accent",monthTone[1]);panel.style.setProperty("--month-deep",monthTone[2]);panel.style.setProperty("--month-ink",monthTone[3]);panel.dataset.month=String(m);
 const first=new Date(y,m,1,12),offset=(first.getDay()+6)%7,start=new Date(y,m,1-offset,12),grid=$("#calendarGrid");grid.innerHTML="";
 for(let i=0;i<42;i++){
-const d=new Date(start);d.setDate(start.getDate()+i);const key=iso(d),inMonth=d.getMonth()===m,items=sorted(state.deadlines.filter(x=>x.date===key)),primary=items.length?subj(items[0].subject):null;
-const b=document.createElement("button");b.type="button";const subjectIds=[...new Set(items.map(x=>x.subject))];const colors=subjectIds.slice(0,2).map(id=>subj(id).color);b.className="day-cell"+(!inMonth?" outside":"")+(key===today()?" today":"")+(key===selected?" selected":"")+(items.length?" has-deadlines":"")+(items.some(x=>away(x.date)<0)?" overdue-cell":"")+(items.some(x=>x.date===today())?" due-today-cell":"");
+const d=new Date(start);d.setDate(start.getDate()+i);const key=iso(d),inMonth=d.getMonth()===m,items=sorted(state.deadlines.filter(x=>x.date===key));
+const b=document.createElement("button");b.type="button";const colors=[...new Set(items.map(x=>x.color||subj(x.subject).color))].slice(0,3);b.className="day-cell"+(!inMonth?" outside":"")+(key===today()?" today":"")+(key===selected?" selected":"")+(items.length?" has-deadlines":"")+(items.some(x=>away(x.date)<0)?" overdue-cell":"")+(items.some(x=>x.date===today())?" due-today-cell":"");
 b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric"})+(items.length?", "+items.length+" deadlines":""));
-if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);if(subjectIds.length>2)b.style.setProperty("--subject-count",String(subjectIds.length));
+if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors[2])b.style.setProperty("--subject-c",colors[2]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);
 const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
 if(items.length){
-const marker=document.createElement("span");marker.className="deadline-bloom";marker.setAttribute("aria-hidden","true");marker.textContent=items.length>1?"✿":"✿";b.appendChild(marker);
-const count=document.createElement("span");count.className="deadline-count";count.textContent=items.length===1?"1 PIN":items.length+" PINS";b.appendChild(count);
+const stack=document.createElement("span");stack.className="task-colour-stack";stack.setAttribute("aria-hidden","true");colors.forEach((color,index)=>{const chip=document.createElement("i");chip.style.setProperty("--chip-color",color);chip.style.setProperty("--chip-index",String(index));stack.appendChild(chip)});b.appendChild(stack);
+const count=document.createElement("span");count.className="deadline-count";count.textContent=items.length===1?"1 TASK":items.length+" TASKS";b.appendChild(count);
 const status=items.some(x=>away(x.date)<0)?"overdue":items.some(x=>away(x.date)<=3)?"soon":"";
 if(status){const flag=document.createElement("i");flag.className="urgency-flag"+(status==="soon"?" soon":"");flag.title=status==="soon"?"Due within 3 days":"Overdue";b.appendChild(flag)}
 }else if(inMonth){const mark=document.createElement("span");mark.className="empty-mark";mark.textContent="✿";b.appendChild(mark)}
@@ -55,7 +55,7 @@ $("#selectedHeading").textContent=pretty(selected,{weekday:"short",month:"short"
 $("#selectedHint").textContent=selected===today()?"Today's deadlines, all in one place.":away(selected)<0?"Past date. Check what slipped, without judgement.":away(selected)===1?"Tomorrow's deadlines.":pretty(selected,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
 if(!items.length){holder.innerHTML='<div class="empty-day">Nothing pinned here yet.<br>Add a deadline when you are ready.</div>';return}
-items.forEach(x=>{const s=subj(x.subject),card=document.createElement("article");card.className="deadline-card";card.style.setProperty("--card-color",s.color);
+items.forEach(x=>{const s=subj(x.subject),card=document.createElement("article");card.className="deadline-card";card.style.setProperty("--card-color",x.color||s.color);
 card.innerHTML='<div class="deadline-card-top"><h3>'+esc(x.title)+'</h3><button class="edit-deadline" type="button" aria-label="Edit deadline" title="Edit deadline">✎</button></div><div class="deadline-meta"><span>'+esc(s.name)+'</span><span class="urgency-label '+esc(x.urgency)+'">'+urgency(x.urgency)+'</span></div>'+(x.notes?'<p class="deadline-notes">'+esc(x.notes)+'</p>':"");
 card.querySelector("button").addEventListener("click",()=>openDeadline(x.id));holder.appendChild(card)})
 }
@@ -64,11 +64,11 @@ const items=sorted(state.deadlines.filter(x=>x.date>=today())).slice(0,5);$("#up
 if(!items.length){holder.innerHTML='<div class="up-next-empty">A little breathing room. Add your next deadline when it comes up.</div>';return}
 items.forEach(x=>{const s=subj(x.subject),d=date(x.date),b=document.createElement("button");b.type="button";b.className="up-next-item";b.style.background="transparent";b.style.textAlign="left";b.style.width="100%";b.style.cursor="pointer";b.style.color="inherit";
 let label=x.date===today()?"DUE TODAY":away(x.date)===1?"DUE TOMORROW":"IN "+away(x.date)+" DAYS";
-b.innerHTML='<span class="up-next-date" style="--item-color:'+esc(s.color)+'"><b>'+d.getDate()+'</b>'+d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase()+'</span><span class="up-next-info"><strong>'+esc(x.title)+'</strong><small>'+esc(s.name)+' · '+label+'</small></span>';
+b.innerHTML='<span class="up-next-date" style="--item-color:'+esc(x.color||s.color)+'"><b>'+d.getDate()+'</b>'+d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase()+'</span><span class="up-next-info"><strong>'+esc(x.title)+'</strong><small>'+esc(s.name)+' · '+label+'</small></span>';
 b.addEventListener("click",()=>{selected=x.date;view=date(x.date);renderAll()});holder.appendChild(b)})
 }
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
-function renderAll(){renderCalendar();renderDay();renderUpNext()}
+function renderAll(){renderCalendar();renderDay();renderUpNext();renderQuickPreview()}
 function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2800)}
 function openDeadline(id){
 editing=id;const x=id?state.deadlines.find(d=>d.id===id):null;$("#deadlineForm").reset();$("#formTitle").innerHTML=(x?"Edit deadline":"Add a deadline")+'<span class="dot">.</span>';$("#formEyebrow").textContent=x?"MAKE A CHANGE":"PIN IT DOWN";
@@ -94,9 +94,9 @@ const holder=$("#subjectEditor");holder.innerHTML="";
 const swatches=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#FF3B30","#00A896","#FFFFFF","#24251F"];
 state.subjects.forEach(s=>{
 const row=document.createElement("div");row.className="subject-row";
-row.innerHTML='<label class="subject-name-label">COURSE NAME<input class="subject-name-input" type="text" maxlength="36" value="'+esc(s.name)+'" aria-label="Course name"></label><label class="hex-label">HEX COLOUR<input class="subject-hex" type="text" maxlength="7" value="'+esc(s.color)+'" aria-label="Hex colour code"></label><button type="button" class="remove-subject" aria-label="Delete '+esc(s.name)+'" title="Delete subject">×</button><div class="swatch-row" aria-label="Paper-inspired colour presets">'+swatches.map(c=>'<button type="button" class="preset-swatch" data-colour="'+c+'" style="--swatch:'+c+'" aria-label="Use '+c+'"></button>').join("")+'</div>';
-const hex=row.querySelector(".subject-hex");
-hex.addEventListener("change",()=>{const value=hex.value.trim();if(!/^#[0-9a-f]{6}$/i.test(value)){hex.value=s.color;toast("Use a six-digit hex colour, such as #D9B7A4.");return}s.color=value.toLowerCase();save();renderAll()});
+row.innerHTML='<label class="subject-name-label">COURSE NAME<input class="subject-name-input" type="text" maxlength="36" value="'+esc(s.name)+'" aria-label="Course name"></label><label class="subject-colour-label"><span>COLOUR</span><input class="subject-hexagon" type="color" value="'+esc(s.color)+'" aria-label="Choose colour for '+esc(s.name)+'"></label><button type="button" class="remove-subject" aria-label="Delete '+esc(s.name)+'" title="Delete subject">×</button><div class="swatch-row" aria-label="More colour choices">'+swatches.map(c=>'<button type="button" class="preset-swatch" data-colour="'+c+'" style="--swatch:'+c+'" aria-label="Use '+c+'"></button>').join("")+'</div>';
+const hex=row.querySelector(".subject-hexagon");
+hex.addEventListener("input",()=>{s.color=hex.value.toLowerCase();save();renderAll()});
 row.querySelector(".subject-name-input").addEventListener("change",e=>{const name=e.target.value.trim();if(!name||state.subjects.some(a=>a.id!==s.id&&a.name.toLowerCase()===name.toLowerCase())){e.target.value=s.name;toast("Choose a unique course name.");return}s.name=name;save();renderSubjectEditor();renderAll();renderOptions($("#deadlineSubject").value)});
 row.querySelectorAll(".preset-swatch").forEach(btn=>btn.addEventListener("click",()=>{s.color=btn.dataset.colour;hex.value=s.color;save();renderAll()}));
 row.querySelector(".remove-subject").addEventListener("click",()=>{if(state.subjects.length<=1){toast("Keep at least one subject colour.");return}if(!confirm("Remove "+s.name+"? Existing deadlines will move to Other if available."))return;let other=state.subjects.find(a=>a.id==="other"&&a.id!==s.id);if(!other){other={id:"other",name:"Other",color:"#c6c1b1"};state.subjects.push(other)}state.deadlines.forEach(d=>{if(d.subject===s.id)d.subject=other.id});state.subjects=state.subjects.filter(a=>a.id!==s.id);save();renderAll();renderSubjectEditor();renderOptions($("#deadlineSubject").value)});
