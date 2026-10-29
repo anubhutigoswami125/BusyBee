@@ -90,3 +90,49 @@ html[data-theme="dark"] .day-cell.outside{background:#f4f4f4!important;color:#aa
 .quick-colour-swatch:hover{transform:scale(1.08)!important}
 .quick-task-row{grid-template-columns:minmax(0,1fr) auto!important;display:grid!important}
 .quick-colour{display:none!important}
+
+/* BUSYBEE POP-ART EDITION */
+:root{--pop-ink:#171717;--pop-paper:#fff9e8;--pop-yellow:#ffe600;--pop-pink:#ff2d8d;--pop-cyan:#00d9f5;--pop-red:#ff3b30}
+body{background:#ffe600!important;background-image:radial-gradient(#171717 1.2px,transparent 1.5px),linear-gradient(135deg,#ffe600 0 25%,#ff9d00 25% 48%,#00d9f5 48% 70%,#ff2d8d 70%)!important;background-size:17px 17px,100% 100%!important;background-attachment:fixed!important;color:var(--pop-ink)!important}
+.app-shell{border:4px solid var(--pop-ink)!important;border-radius:0!important;box-shadow:12px 12px 0 var(--pop-ink)!important;background:var(--pop-paper)!important}
+.topbar{background:var(--pop-yellow)!important;border-bottom:4px solid var(--pop-ink)!important}
+.wordmark,.wordmark *{font-weight:1000!important;color:var(--pop-ink)!important;text-shadow:2px 2px #fff!important}
+.bee-mark{background:var(--pop-pink)!important;border:3px solid var(--pop-ink)!important;box-shadow:3px 3px var(--pop-ink)!important;transform:rotate(-7deg)}
+.icon-button,.nav-arrow,.today-button,.add-deadline,.quick-done,.modal button{border:3px solid var(--pop-ink)!important;border-radius:0!important;box-shadow:4px 4px var(--pop-ink)!important;font-weight:1000!important}
+.icon-button,.nav-arrow{background:var(--pop-cyan)!important;color:var(--pop-ink)!important}
+.intro{background:var(--pop-paper)!important;border-bottom:4px solid var(--pop-ink)!important;position:relative}
+.intro:after{content:"";position:absolute;right:3%;top:8%;width:100px;height:100px;pointer-events:none;background:repeating-conic-gradient(var(--pop-pink) 0 8deg,transparent 8deg 16deg);clip-path:polygon(50% 0,61% 35%,98% 20%,73% 50%,100% 75%,62% 68%,50% 100%,38% 68%,0 75%,27% 50%,2% 20%,39% 35%)}
+.eyebrow{font-weight:1000!important;letter-spacing:1.4px!important;text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:var(--pop-pink);text-underline-offset:4px}
+.intro h1{font-weight:1000!important;letter-spacing:-2px!important;text-shadow:3px 3px var(--pop-yellow),6px 6px var(--pop-pink)!important}
+.intro h1 em{color:var(--pop-pink)!important;-webkit-text-stroke:1px var(--pop-ink);text-shadow:2px 2px var(--pop-ink)!important}
+.note-card,.calendar-panel,.side-panel,.up-next,.deadline-card,.day-deadline,.modal,.credits-panel{border:4px solid var(--pop-ink)!important;border-radius:0!important;box-shadow:7px 7px var(--pop-ink)!important}
+.note-card{background:#fff06a!important;transform:rotate(1deg)}
+.note-card:before{background:var(--pop-cyan)!important;border:2px solid var(--pop-ink)!important}
+#quickTasks{background-color:#fffdf2!important;background-image:repeating-linear-gradient(transparent 0 27px,rgba(23,23,23,.15) 27px 28px)!important;border:2px solid var(--pop-ink)!important;border-radius:0!important}
+.quick-task-row{background:#fff!important;border:2px solid var(--pop-ink)!important;border-radius:0!important;box-shadow:3px 3px var(--pop-ink)!important}
+.quick-colour-grid{background:#fff!important;border:3px solid var(--pop-ink)!important;box-shadow:3px 3px var(--pop-pink)!important}
+.quick-colour-swatch{border:2px solid var(--pop-ink)!important;box-shadow:2px 2px var(--pop-ink)!important}
+.quick-colour-swatch.active{outline:3px solid var(--pop-pink)!important;outline-offset:1px!important}
+.quick-done{background:var(--pop-pink)!important;color:#fff!important}
+.calendar-panel{background:var(--pop-yellow)!important;background-image:radial-gradient(#171717 1.1px,transparent 1.3px)!important;background-size:12px 12px!important}
+.calendar-head,.weekdays{background:var(--pop-yellow)!important;color:var(--pop-ink)!important}
+.month-row h2{font-weight:1000!important;text-shadow:2px 2px #fff!important}
+.today-button{background:var(--pop-red)!important;color:#fff!important}
+.calendar-grid{background:var(--pop-ink)!important;border:3px solid var(--pop-ink)!important;gap:3px!important}
+.calendar-grid .day-cell{background:#fff!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.calendar-grid .day-cell.has-deadlines,.calendar-grid .day-cell.has-deadlines:nth-child(3n+1),.calendar-grid .day-cell.has-deadlines:nth-child(3n+2),.calendar-grid .day-cell.has-deadlines:nth-child(3n){background:var(--subject-a,#fff)!important}
+.calendar-grid .day-cell.selected{outline:4px solid var(--pop-ink)!important;outline-offset:-4px!important}
+.calendar-grid .day-cell.today{border:4px solid var(--pop-pink)!important}
+.side-panel{background:#fff!important}.side-head{background:var(--pop-cyan)!important;border-bottom:3px solid var(--pop-ink)!important}
+.sticker{background:var(--pop-yellow)!important;border:3px solid var(--pop-ink)!important;border-radius:50%!important;box-shadow:3px 3px var(--pop-ink)!important}
+.add-deadline{background:var(--pop-cyan)!important;color:var(--pop-ink)!important}
+.credits-panel{background:var(--pop-pink)!important;border-color:var(--pop-ink)!important;box-shadow:7px 7px var(--pop-ink)!important}
+.credits-avatar{border:4px solid #fff!important;outline:3px solid var(--pop-ink)!important;box-shadow:4px 4px var(--pop-ink)!important}
+.specialization-tag{background:var(--pop-yellow)!important;color:var(--pop-ink)!important;border:2px solid var(--pop-ink)!important}
+.credits-links a{color:var(--pop-ink)!important;border-bottom:3px solid var(--pop-yellow)!important}
+.footer{background:var(--pop-cyan)!important;border:3px solid var(--pop-ink)!important;box-shadow:5px 5px var(--pop-ink)!important}
+.modal{background:var(--pop-paper)!important}.modal input,.modal textarea,.modal select{border:2px solid var(--pop-ink)!important;border-radius:0!important}
+button:hover{filter:saturate(1.2) contrast(1.05)!important}
+html[data-theme="dark"] body{background:#ffe600!important;color:var(--pop-ink)!important}
+html[data-theme="dark"] .app-shell,html[data-theme="dark"] .side-panel{background:var(--pop-paper)!important;color:var(--pop-ink)!important}
+@media(max-width:680px){body{background-attachment:scroll!important}.app-shell{box-shadow:6px 6px var(--pop-ink)!important}.note-card{transform:none}.intro:after{width:55px;height:55px}}
