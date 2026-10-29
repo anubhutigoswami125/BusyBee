@@ -1,4 +1,4 @@
-# BusyBee
+# BusyBee 🐝
 
 **A scrapbook-inspired academic deadline calendar with full-cell subject colours and separate urgency indicators.**
 
