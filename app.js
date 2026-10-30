@@ -41,7 +41,7 @@ b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric
 if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors[2])b.style.setProperty("--subject-c",colors[2]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);
 const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
 /* Keep only the date number; remove task labels, badges, and marker squares. */
-b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll()});grid.appendChild(b)
+b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll();$("#dayNoteDialog").showModal()});grid.appendChild(b)
 }
 renderLegend()
 }
@@ -61,7 +61,7 @@ if(!items.length){holder.innerHTML='<div class="up-next-empty">A little breathin
 items.forEach(x=>{const s=subj(x.subject),d=date(x.date),b=document.createElement("button");b.type="button";b.className="up-next-item";b.style.background="transparent";b.style.textAlign="left";b.style.width="100%";b.style.cursor="pointer";b.style.color="inherit";
 let label=x.date===today()?"DUE TODAY":away(x.date)===1?"DUE TOMORROW":"IN "+away(x.date)+" DAYS";
 b.innerHTML='<span class="up-next-date" style="--item-color:'+esc(x.color||s.color)+'"><b>'+d.getDate()+'</b>'+d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase()+'</span><span class="up-next-info"><strong>'+esc(x.title)+'</strong><small>'+esc(s.name)+' · '+label+'</small></span>';
-b.addEventListener("click",()=>{selected=x.date;view=date(x.date);renderAll()});holder.appendChild(b)})
+b.addEventListener("click",()=>{selected=x.date;view=date(x.date);renderAll();$("#dayNoteDialog").showModal()});holder.appendChild(b)})
 }
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
 function renderAll(){renderCalendar();renderDay();renderUpNext();renderQuickPreview()}
@@ -75,6 +75,8 @@ $("#nextMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),v
 $("#todayBtn").addEventListener("click",()=>{selected=today();view=date(selected);renderAll()});
 
 $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
+$("#closeDayNote").addEventListener("click",()=>$("#dayNoteDialog").close());
+$("#dayNoteDialog").addEventListener("click",e=>{if(e.target===$("#dayNoteDialog"))$("#dayNoteDialog").close()});
 // Quick capture: one scribbled line per task, with a date and an individual colour.
 const quickPalette=["#8ED1FC","#EC008C","#1B365D","#FF6F61","#FF4D88","#C80036","#00C2D1","#FFD700","#7CB342","#59C3C3","#E5A93C","#FF85A1","#FFE600","#D8B4F8","#98FF98","#FFB7B2","#00875A","#D81B60","#FFF176","#1B4D3E","#00A896","#FF6B35","#FF8811","#FFD166","#0055A5","#FF1D25","#FFEB3B","#E040FB","#FF9E7D","#FFC107","#00B4D8","#8AC926","#D4AF37","#005B60","#C85A17","#8E1600","#FF6700","#4A154B","#121212","#00F5D4","#800020","#E09F3E","#556B2F","#9E2A2B","#0B5345","#D32F2F","#D4AF37","#E0F7FA"];
 let quickRows=[];
