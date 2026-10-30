@@ -502,3 +502,48 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
  .calendar-panel{gap:6px}
  .credits-panel{padding-top:6px!important;padding-bottom:6px!important}
 }
+
+
+/* Desktop: keep the calendar in the left column and credits in the right pane. */
+@media (min-width:1200px) and (min-height:760px){
+  .workspace{
+    display:grid!important;
+    grid-template-columns:minmax(0,2.15fr) minmax(300px,.85fr)!important;
+    align-items:stretch!important;
+    gap:22px!important;
+    padding:12px 3% 10px!important;
+  }
+  .calendar-panel{
+    width:100%!important;
+    height:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+  }
+  .credits-panel{
+    width:100%!important;
+    height:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    margin:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    align-items:stretch!important;
+    gap:16px!important;
+    padding:26px!important;
+  }
+  .credits-avatar-wrap{min-height:100px!important;justify-content:flex-start}
+  .credits-avatar{width:88px!important;height:88px!important}
+  .credits-copy h3{font-size:clamp(17px,1.5vw,22px)!important;line-height:1.15}
+  .credits-copy p{font-size:12px!important;line-height:1.5!important}
+  .tech-stack{display:block!important}
+  .credits-links{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:12px!important;margin-top:12px!important}
+  .credits-links a{font-size:10px!important}
+}
+@media (min-width:1200px) and (min-height:760px) and (max-height:820px){
+  .credits-panel{padding:18px!important;gap:12px!important}
+  .credits-avatar-wrap{min-height:82px!important}
+  .credits-avatar{width:72px!important;height:72px!important}
+  .credits-copy p{font-size:10px!important}
+  .credits-links{gap:8px!important;margin-top:6px!important}
+}
