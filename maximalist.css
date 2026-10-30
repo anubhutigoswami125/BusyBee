@@ -456,3 +456,6 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 .day-deadlines{display:grid;gap:12px;}
 
 #calendarGrid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;visibility:visible!important}#calendarGrid .day-cell{display:flex!important;visibility:visible!important;min-width:0}#calendarGrid .day-cell.outside{display:none!important}#calendarGrid .day-cell.has-deadlines{background:var(--subject-color,var(--subject-a,#ff4fa3))!important}#calendarGrid .day-cell.has-deadlines:nth-child(3n+1),#calendarGrid .day-cell.has-deadlines:nth-child(3n+2),#calendarGrid .day-cell.has-deadlines:nth-child(3n){background:var(--subject-color,var(--subject-a,#ff4fa3))!important}.day-note-dialog .empty-day{color:#fff4fa!important;font-weight:800;line-height:1.5}
+
+/* Calendar cells stay simple: colour + date number, no urgency banners. */
+#calendarGrid .day-cell.overdue-cell:after,#calendarGrid .day-cell.due-today-cell:before{display:none!important;content:none!important}
