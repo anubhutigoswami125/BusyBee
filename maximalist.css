@@ -428,3 +428,25 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 .day-note-dialog .empty-day{border:2px dashed #ff75bd;color:#ffc0dc;padding:20px}
 .day-note-dialog .add-deadline{margin-top:17px;background:#ff4fa3!important;color:#09070b!important;border:2px solid #09070b!important;box-shadow:4px 4px #e6007e;font-weight:700}
 @media(max-width:680px){.day-note-dialog{width:min(440px,calc(100% - 24px));max-height:82vh}.day-note-inner{padding:19px}}
+
+/* Simplified task colours: one shuffle control, no manual swatch grids. */
+.calendar-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.shuffle-button{background:#ff4fa3;color:#160b13;border:2px solid #160b13;font-weight:800;box-shadow:3px 3px 0 #e6007e}
+.shuffle-button:hover{background:#ffd700}
+.quick-colour-grid,.quick-colour-swatch{display:none!important}
+.day-note-dialog{width:min(440px,calc(100% - 28px));max-height:min(78vh,680px);overflow:auto;padding:0;border:3px solid #ff75bd;background:#24101f;color:#fff4fa;box-shadow:10px 10px 0 #e6007e;transform:rotate(-.6deg)}
+.day-note-dialog::backdrop{background:rgba(5,3,8,.78);backdrop-filter:blur(4px)}
+.day-note-inner{padding:24px}
+.day-note-dialog .side-head{position:relative;align-items:center;padding:0 0 15px;border-bottom:2px dashed #ff75bd}
+.day-note-dialog .side-head h2{color:#fff4fa}
+.day-note-dialog .side-head .eyebrow{color:#ffb5d7}
+.day-note-close{color:#fff4fa!important;font-size:30px!important;padding:0 5px}
+.day-note-dialog .side-hint{color:#ffc0dc;margin:15px 0}
+.day-note-dialog .day-deadlines{gap:12px;max-height:52vh;overflow:auto;padding:3px 5px 8px 0}
+.day-note-dialog .deadline-card{background:#180e17!important;border:2px solid #ff75bd!important;border-left:7px solid var(--card-color)!important;box-shadow:4px 4px #650d40!important;padding:14px}
+.day-note-dialog .deadline-card h3{color:#fff4fa!important;font-size:15px}
+.day-note-dialog .deadline-meta{color:#ffc0dc!important}
+.day-note-dialog .deadline-notes{color:#ffe2f0!important}
+.day-note-dialog .empty-day{border:2px dashed #ff75bd;color:#ffc0dc;padding:20px}
+.day-note-dialog .add-deadline{margin-top:17px;background:#ff4fa3!important;color:#09070b!important;border:2px solid #09070b!important;box-shadow:4px 4px #e6007e;font-weight:700}
+@media(max-width:680px){.calendar-actions{gap:5px}.calendar-actions .today-button{font-size:9px;padding:8px}.day-note-dialog{width:calc(100% - 24px);max-height:82vh}.day-note-inner{padding:19px}}
