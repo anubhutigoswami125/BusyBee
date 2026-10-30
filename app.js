@@ -14,14 +14,14 @@ const defaults = [
 ];
 const monthPalettes=[["#8ED1FC","#EC008C","#1B365D","#FF6F61"],["#FF4D88","#C80036","#00C2D1","#FFD700"],["#7CB342","#59C3C3","#E5A93C","#FF85A1"],["#FFE600","#D8B4F8","#98FF98","#FFB7B2"],["#00875A","#D81B60","#FFF176","#1B4D3E"],["#00A896","#FF6B35","#FF8811","#FFD166"],["#0055A5","#FF1D25","#FFEB3B","#E040FB"],["#FF9E7D","#FFC107","#00B4D8","#8AC926"],["#D4AF37","#005B60","#C85A17","#8E1600"],["#FF6700","#4A154B","#121212","#00F5D4"],["#800020","#E09F3E","#556B2F","#9E2A2B"],["#0B5345","#D32F2F","#D4AF37","#E0F7FA"]];
 function randomMonthColor(month){const p=monthPalettes[month];return p[Math.floor(Math.random()*p.length)]}
-function recolorAllTasks(){state.deadlines.forEach(task=>{task.color=randomMonthColor(date(task.date).getMonth())});save()}
+function recolorAllTasks(){state.deadlines.forEach(task=>{const month=date(task.date).getMonth(),palette=monthPalettes[month],previous=String(task.color||"").toUpperCase(),choices=palette.filter(color=>color!==previous),pool=choices.length?choices:palette;task.color=pool[Math.floor(Math.random()*pool.length)]});state.paletteVersion=2;save()}
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function date(s){const a=s.split("-").map(Number);return new Date(a[0],a[1]-1,a[2],12)}
 function today(){return iso(new Date())}
 function pretty(s,opts){return date(s).toLocaleDateString("en-IN",opts||{weekday:"short",month:"short",day:"numeric"})}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const c=String(s.color||"").toLowerCase();if(migration[c])s.color=migration[c]});return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[]}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const color=String(s.color||"").toLowerCase();if(migration[color])s.color=migration[color]});if(x.paletteVersion!==2){x.deadlines.forEach(task=>{const month=Number(String(task.date||"").slice(5,7))-1;if(month>=0&&month<12)task.color=monthPalettes[month][Math.floor(Math.random()*monthPalettes[month].length)]});x.paletteVersion=2;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}}return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[],paletteVersion:2}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
 // BusyBee is permanently dark mode. No theme preference or toggle is used.
 document.documentElement.dataset.theme="dark";
@@ -39,9 +39,9 @@ const monthTone=monthPalettes[m];const panel=$(".calendar-panel");panel.style.se
 const first=new Date(y,m,1,12),offset=(first.getDay()+6)%7,start=new Date(y,m,1-offset,12),daysInMonth=new Date(y,m+1,0,12).getDate(),totalCells=Math.ceil((offset+daysInMonth)/7)*7,grid=$("#calendarGrid");grid.innerHTML="";
 for(let i=0;i<totalCells;i++){
 const d=new Date(start);d.setDate(start.getDate()+i);const key=iso(d),inMonth=d.getMonth()===m,items=sorted(state.deadlines.filter(x=>x.date===key));
-const b=document.createElement("button");b.type="button";const colors=[...new Set(items.map(x=>x.color||subj(x.subject).color))].slice(0,3);b.className="day-cell"+(!inMonth?" outside":"")+(key===today()?" today":"")+(key===selected?" selected":"")+(items.length?" has-deadlines":"")+(items.some(x=>away(x.date)<0)?" overdue-cell":"")+(items.some(x=>x.date===today())?" due-today-cell":"");
+const b=document.createElement("button");b.type="button";const colors=[...new Set(items.map(x=>x.color||subj(x.subject).color))].slice(0,1);b.className="day-cell"+(!inMonth?" outside":"")+(key===today()?" today":"")+(key===selected?" selected":"")+(items.length?" has-deadlines":"")+(items.some(x=>away(x.date)<0)?" overdue-cell":"")+(items.some(x=>x.date===today())?" due-today-cell":"");
 b.setAttribute("aria-label",pretty(key,{weekday:"long",month:"long",day:"numeric"})+(items.length?", "+items.length+" deadlines":""));
-if(colors[0])b.style.setProperty("--subject-a",colors[0]);if(colors[1])b.style.setProperty("--subject-b",colors[1]);if(colors[2])b.style.setProperty("--subject-c",colors[2]);if(colors.length===1)b.style.setProperty("--subject-color",colors[0]);
+if(colors[0]){b.style.setProperty("--subject-a",colors[0]);b.style.setProperty("--subject-color",colors[0]);}
 const n=document.createElement("span");n.className="day-number"+(key===today()?" today-number":"");n.textContent=d.getDate();b.appendChild(n);
 /* Keep only the date number; remove task labels, badges, and marker squares. */
 b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll();$("#dayNoteDialog").showModal()});grid.appendChild(b)
@@ -51,7 +51,7 @@ renderLegend()
 function renderDay(){
 $("#selectedHeading").textContent=pretty(selected,{weekday:"short",month:"short",day:"numeric"});
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
-if(!items.length){holder.innerHTML='<div class="empty-day">No tasks due.</div>';return}
+if(!items.length){holder.innerHTML='<div class="empty-day">Nothing important for today, so chill and explore</div>';return}
 items.forEach(x=>{const title=document.createElement("p");title.className="task-title-only";title.textContent=x.title;holder.appendChild(title)})
 }
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
