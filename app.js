@@ -50,13 +50,9 @@ renderLegend()
 }
 function renderDay(){
 $("#selectedHeading").textContent=pretty(selected,{weekday:"short",month:"short",day:"numeric"});
-$("#selectedHint").textContent=selected===today()?"Today's deadlines, all in one place.":away(selected)<0?"Past date. Check what slipped, without judgement.":away(selected)===1?"Tomorrow's deadlines.":pretty(selected,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
-if(!items.length){holder.innerHTML='<div class="empty-day">No tasks on this date yet.<br>Add a deadline when you are ready.</div>';return}
-items.forEach(x=>{const s=subj(x.subject),card=document.createElement("article");card.className="deadline-card";card.style.setProperty("--card-color",x.color||s.color);
-card.innerHTML='<div class="deadline-card-top"><h3>'+esc(x.title)+'</h3><div class="deadline-card-actions"><button class="edit-deadline" type="button" aria-label="Edit deadline" title="Edit deadline">✎</button><button class="delete-card-deadline" type="button" aria-label="Delete deadline" title="Delete deadline">×</button></div></div><div class="deadline-meta"><span>'+esc(s.name)+'</span><span class="urgency-label '+esc(x.urgency)+'">'+urgency(x.urgency)+'</span></div>'+(x.notes?'<p class="deadline-notes">'+esc(x.notes)+'</p>':"");
-card.querySelector(".edit-deadline").addEventListener("click",()=>openDeadline(x.id));
-card.querySelector(".delete-card-deadline").addEventListener("click",()=>{if(!confirm('Delete "'+x.title.replace(/"/g,'\\"')+'" from your deadlines?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==x.id);save();renderAll();toast("Deadline deleted.")});holder.appendChild(card)})
+if(!items.length){holder.innerHTML='<div class="empty-day">No tasks due.</div>';return}
+items.forEach(x=>{const title=document.createElement("p");title.className="task-title-only";title.textContent=x.title;holder.appendChild(title)})
 }
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
 function renderAll(){renderCalendar();renderDay();renderQuickPreview()}
