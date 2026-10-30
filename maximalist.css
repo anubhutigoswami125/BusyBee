@@ -547,3 +547,9 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
   .credits-copy p{font-size:10px!important}
   .credits-links{gap:8px!important;margin-top:6px!important}
 }
+
+
+/* Clear-calendar control: visually distinct destructive action. */
+.clear-calendar-button{background:#ff4f5e!important;color:#16070a!important;border-color:#16070a!important}
+.clear-calendar-button:hover{background:#ffd700!important;transform:translate(-1px,-1px)}
+@media(max-width:560px){.clear-calendar-button{flex-basis:auto}}
