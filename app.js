@@ -22,7 +22,10 @@ function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
 const THEME_KEY="busybee-theme-v1";
 function applyTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem(THEME_KEY,theme);const b=$("#themeToggle");if(b){b.innerHTML=(theme==="dark"?"☼":"◐") + " <span>"+(theme==="dark"?"LIGHT":"DARK")+"</span>";b.setAttribute("aria-label","Switch to "+(theme==="dark"?"light":"dark")+" mode");b.title="Switch to "+(theme==="dark"?"light":"dark")+" mode"}}
-// Start in dark mode for first-time visitors; retain a theme the user has explicitly chosen.
+// One-time default migration: replace any previously saved light default with dark.
+// After this visit, the theme toggle choice is preserved normally.
+const DARK_DEFAULT_KEY="busybee-dark-default-v1";
+if(!localStorage.getItem(DARK_DEFAULT_KEY)){localStorage.setItem(THEME_KEY,"dark");localStorage.setItem(DARK_DEFAULT_KEY,"1");}
 applyTheme(localStorage.getItem(THEME_KEY)||"dark");
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast("Couldn't save. Download a backup and free some browser storage.")}}
 function subj(id){return state.subjects.find(s=>s.id===id)||state.subjects.find(s=>s.id==="other")||{id:"other",name:"Other",color:"#c6c1b1"}}
