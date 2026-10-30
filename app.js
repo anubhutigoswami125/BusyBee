@@ -121,6 +121,11 @@ selected=data.date;view=date(data.date);save();$("#deadlineDialog").close();rend
 $("#deleteDeadline").addEventListener("click",()=>{if(!editing)return;const x=state.deadlines.find(d=>d.id===editing);if(!confirm('Delete "'+(x?x.title:"this deadline")+'"?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==editing);save();$("#deadlineDialog").close();renderAll();toast("Deadline deleted.")});
 $("#calendarGrid").addEventListener("keydown",e=>{const cell=e.target.closest(".day-cell");if(!cell)return;let step=0;if(e.key==="ArrowLeft")step=-1;else if(e.key==="ArrowRight")step=1;else if(e.key==="ArrowUp")step=-7;else if(e.key==="ArrowDown")step=7;else return;e.preventDefault();const next=date(cell.dataset.date);next.setDate(next.getDate()+step);selected=iso(next);view=date(selected);renderAll();const target=[...$("#calendarGrid").querySelectorAll(".day-cell")].find(el=>el.dataset.date===selected);if(target)target.focus()});
 $("#exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({app:"BusyBee",version:1,exportedAt:new Date().toISOString(),...state},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="busybee-backup-"+today()+".json";a.click();URL.revokeObjectURL(url);toast("Backup downloaded.")});
+$("#clearCalendarBtn").addEventListener("click",()=>{
+if(!state.deadlines.length){toast("Your calendar is already clear.");return}
+if(!confirm("Clear every deadline from this calendar? Your subjects and settings will stay. This cannot be undone unless you have a backup."))return;
+state.deadlines=[];save();selected=today();view=date(selected);$("#quickTasks").value="";renderAll();toast("Calendar cleared. Your subjects are still saved.")
+});
 $("#importBtn").addEventListener("click",()=>$("#importFile").click());
 $("#importFile").addEventListener("change",async e=>{
 const file=e.target.files&&e.target.files[0];if(!file)return;
