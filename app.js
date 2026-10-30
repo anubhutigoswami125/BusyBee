@@ -51,7 +51,7 @@ renderLegend()
 function renderDay(){
 $("#selectedHeading").textContent=pretty(selected,{weekday:"short",month:"short",day:"numeric"});
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
-if(!items.length){holder.innerHTML='<div class="empty-day">Nothing important for today, so chill and explore</div>';return}
+if(!items.length){holder.innerHTML='<div class="empty-day">Nothing important for today, so chill and explore.</div>';return}
 items.forEach(x=>{const title=document.createElement("p");title.className="task-title-only";title.textContent=x.title;holder.appendChild(title)})
 }
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
