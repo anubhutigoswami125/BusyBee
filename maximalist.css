@@ -450,3 +450,7 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 .day-note-dialog .empty-day{border:2px dashed #ff75bd;color:#ffc0dc;padding:20px}
 .day-note-dialog .add-deadline{margin-top:17px;background:#ff4fa3!important;color:#09070b!important;border:2px solid #09070b!important;box-shadow:4px 4px #e6007e;font-weight:700}
 @media(max-width:680px){.calendar-actions{gap:5px}.calendar-actions .today-button{font-size:9px;padding:8px}.day-note-dialog{width:calc(100% - 24px);max-height:82vh}.day-note-inner{padding:19px}}
+
+/* Date popup: task titles only. */
+.task-title-only{margin:0;padding:12px 14px;border:2px solid #171017;border-radius:0;background:#fff;color:#171017;font-weight:800;font-size:1rem;box-shadow:4px 4px 0 #ec008c;}
+.day-deadlines{display:grid;gap:12px;}
