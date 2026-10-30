@@ -392,3 +392,9 @@ html[data-theme="dark"] .add-deadline{background:#ff4fa3!important;color:#09070b
 html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{background:#ffb5d7!important;color:#09070b!important;border-color:#09070b!important}
 @media(max-width:900px){html[data-theme="dark"] .intro{grid-template-columns:1fr!important;gap:20px!important}html[data-theme="dark"] .note-card{width:min(100%,520px)!important;margin:10px auto!important;transform:rotate(.5deg)!important}html[data-theme="dark"] .intro:before{left:10%!important;bottom:20%!important;font-size:clamp(64px,12vw,130px)!important}}
 @media(max-width:560px){html[data-theme="dark"] .intro{padding:20px!important;gap:18px!important}html[data-theme="dark"] .note-card{padding:16px!important}html[data-theme="dark"] .intro:before{left:3%!important;bottom:26%!important;opacity:.28!important}}
+
+/* Calendar cleanup: hide dates outside the displayed month. */
+.calendar-grid .day-cell.outside{display:none!important}
+/* Date numbers: visible at the top-left of each date cell. */
+.calendar-grid .day-cell{position:relative!important}
+.calendar-grid .day-cell .day-number{display:block!important;position:absolute!important;top:6px!important;left:7px!important;z-index:2!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;color:#171717!important;font:800 12px/1.2 var(--sans,Arial,sans-serif)!important;text-align:left!important}
