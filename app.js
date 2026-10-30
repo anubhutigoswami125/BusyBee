@@ -12,6 +12,9 @@ const defaults = [
 {id:"english",name:"English / PEL",color:"#F15BB5"},
 {id:"other",name:"Other",color:"#8D99AE"}
 ];
+const monthPalettes=[["#8ED1FC","#EC008C","#1B365D","#FF6F61"],["#FF4D88","#C80036","#00C2D1","#FFD700"],["#7CB342","#59C3C3","#E5A93C","#FF85A1"],["#FFE600","#D8B4F8","#98FF98","#FFB7B2"],["#00875A","#D81B60","#FFF176","#1B4D3E"],["#00A896","#FF6B35","#FF8811","#FFD166"],["#0055A5","#FF1D25","#FFEB3B","#E040FB"],["#FF9E7D","#FFC107","#00B4D8","#8AC926"],["#D4AF37","#005B60","#C85A17","#8E1600"],["#FF6700","#4A154B","#121212","#00F5D4"],["#800020","#E09F3E","#556B2F","#9E2A2B"],["#0B5345","#D32F2F","#D4AF37","#E0F7FA"]];
+function randomMonthColor(month){const p=monthPalettes[month];return p[Math.floor(Math.random()*p.length)]}
+function recolorAllTasks(){state.deadlines.forEach(task=>{task.color=randomMonthColor(date(task.date).getMonth())});save()}
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function date(s){const a=s.split("-").map(Number);return new Date(a[0],a[1]-1,a[2],12)}
 function today(){return iso(new Date())}
@@ -55,16 +58,8 @@ card.innerHTML='<div class="deadline-card-top"><h3>'+esc(x.title)+'</h3><div cla
 card.querySelector(".edit-deadline").addEventListener("click",()=>openDeadline(x.id));
 card.querySelector(".delete-card-deadline").addEventListener("click",()=>{if(!confirm('Delete "'+x.title.replace(/"/g,'\\"')+'" from your deadlines?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==x.id);save();renderAll();toast("Deadline deleted.")});holder.appendChild(card)})
 }
-function renderUpNext(){
-const items=sorted(state.deadlines.filter(x=>x.date>=today())).slice(0,5);$("#upNextCount").textContent=items.length+" ITEM"+(items.length===1?"":"S");const holder=$("#upNextList");holder.innerHTML="";
-if(!items.length){holder.innerHTML='<div class="up-next-empty">A little breathing room. Add your next deadline when it comes up.</div>';return}
-items.forEach(x=>{const s=subj(x.subject),d=date(x.date),b=document.createElement("button");b.type="button";b.className="up-next-item";b.style.background="transparent";b.style.textAlign="left";b.style.width="100%";b.style.cursor="pointer";b.style.color="inherit";
-let label=x.date===today()?"DUE TODAY":away(x.date)===1?"DUE TOMORROW":"IN "+away(x.date)+" DAYS";
-b.innerHTML='<span class="up-next-date" style="--item-color:'+esc(x.color||s.color)+'"><b>'+d.getDate()+'</b>'+d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase()+'</span><span class="up-next-info"><strong>'+esc(x.title)+'</strong><small>'+esc(s.name)+' · '+label+'</small></span>';
-b.addEventListener("click",()=>{selected=x.date;view=date(x.date);renderAll();$("#dayNoteDialog").showModal()});holder.appendChild(b)})
-}
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
-function renderAll(){renderCalendar();renderDay();renderUpNext();renderQuickPreview()}
+function renderAll(){renderCalendar();renderDay();renderQuickPreview()}
 function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2800)}
 function openDeadline(id){
 editing=id;const x=id?state.deadlines.find(d=>d.id===id):null;$("#deadlineForm").reset();$("#formTitle").innerHTML=(x?"Edit deadline":"Add a deadline")+'<span class="dot">.</span>';$("#formEyebrow").textContent=x?"MAKE A CHANGE":"ADD A TASK";
@@ -73,6 +68,7 @@ $("#deadlineTitle").value=x?x.title:"";$("#deadlineDate").value=x?x.date:selecte
 $("#prevMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1,12);renderCalendar()});
 $("#nextMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1,12);renderCalendar()});
 $("#todayBtn").addEventListener("click",()=>{selected=today();view=date(selected);renderAll()});
+$("#shuffleColours").addEventListener("click",()=>{recolorAllTasks();renderAll();toast("All task colours reshuffled using each due month’s palette.")});
 
 $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
 $("#closeDayNote").addEventListener("click",()=>$("#dayNoteDialog").close());
@@ -90,21 +86,19 @@ let actualYear=year;if(!match[4]&&month<view.getMonth()-5)actualYear=year+1;
 const dates=[];for(let day=first;day<=last;day++){const dt=new Date(actualYear,month,day,12);if(dt.getMonth()!==month)return {raw,title:raw.replace(match[0],"").trim(),dates:[],error:"That date does not exist",color:quickPalette[index%quickPalette.length]};dates.push(iso(dt))}
 const title=raw.replace(match[0],"").replace(/\s+/g," ").replace(/[,:-]+$/,"").trim();
 const subject=state.subjects.find(s=>title.toLowerCase().includes(s.name.toLowerCase()))||state.subjects.find(s=>s.id==="other")||state.subjects[0];
-return {raw,title:title||raw.trim(),dates,subject:subject&&subject.id,color:(subject&&subject.color)||quickPalette[index%quickPalette.length],error:title?"":"Add a task name"};
+return {raw,title:title||raw.trim(),dates,subject:subject&&subject.id,color:randomMonthColor(dates.length?date(dates[0]).getMonth():view.getMonth()),error:title?"":"Add a task name"};
 }
 function renderQuickPreview(){
 const area=$("#quickTasks"),holder=$("#quickTaskPreview");if(!area||!holder)return;
-const lines=area.value.split(/\n/).map(x=>x.trim()).filter(Boolean);const previousColours=new Map(quickRows.map(x=>[x.raw,x.color]));quickRows=lines.map(parseQuickLine);quickRows.forEach(x=>{if(previousColours.has(x.raw))x.color=previousColours.get(x.raw)});holder.innerHTML="";
-if(!quickRows.length){holder.innerHTML='<p class="quick-help">One task per line. Add a date, then pick its colour.</p>';return}
+const lines=area.value.split(/\n/).map(x=>x.trim()).filter(Boolean);quickRows=lines.map(parseQuickLine);holder.innerHTML="";
+if(!quickRows.length){holder.innerHTML='<p class="quick-help">One task per line. Add a date. BusyBee picks the colour.</p>';return}
 quickRows.forEach((row,index)=>{
 const item=document.createElement("div");item.className="quick-task-row"+(row.error?" needs-date":"");
 const chosen=/^#[0-9a-f]{6}$/i.test(row.color)?row.color:quickPalette[index%quickPalette.length];
 item.style.setProperty("--quick-color",chosen);
 const copy=document.createElement("span");copy.className="quick-task-copy";copy.textContent=row.title||row.raw;
 const dateLabel=document.createElement("small");dateLabel.className="quick-task-date";dateLabel.textContent=row.error?row.error:row.dates.length===1?pretty(row.dates[0]):pretty(row.dates[0])+" to "+pretty(row.dates[row.dates.length-1]);
-const picker=document.createElement("div");picker.className="quick-colour-grid";picker.setAttribute("role","group");picker.setAttribute("aria-label","Choose a colour for "+row.title);
-quickPalette.forEach(color=>{const swatch=document.createElement("button");swatch.type="button";swatch.className="quick-colour-swatch"+(color.toLowerCase()===chosen.toLowerCase()?" active":"");swatch.style.setProperty("--swatch-color",color);swatch.setAttribute("aria-label","Choose "+color);swatch.title=color;swatch.addEventListener("click",()=>{row.color=color;item.style.setProperty("--quick-color",color);picker.querySelectorAll("button").forEach(button=>button.classList.toggle("active",button===swatch))});picker.appendChild(swatch)});
-item.append(copy,dateLabel,picker);holder.appendChild(item)
+item.append(copy,dateLabel);holder.appendChild(item)
 })
 }
 $("#quickTasks").addEventListener("input",renderQuickPreview);
@@ -114,8 +108,8 @@ const invalid=quickRows.find(x=>x.error||!x.dates.length);if(invalid){toast("Add
 let added=0;
 quickRows.forEach(row=>row.dates.forEach(day=>{
 const existing=state.deadlines.find(x=>x.date===day&&x.title.toLowerCase()===row.title.toLowerCase());
-if(existing){existing.color=row.color;if(row.subject)existing.subject=row.subject}
-else state.deadlines.push({id:uid(),title:row.title,date:day,subject:row.subject||(state.subjects[0]||{}).id,color:row.color,urgency:"normal",notes:"",createdAt:new Date().toISOString()});
+if(existing){existing.color=randomMonthColor(date(day).getMonth());if(row.subject)existing.subject=row.subject}
+else state.deadlines.push({id:uid(),title:row.title,date:day,subject:row.subject||(state.subjects[0]||{}).id,color:randomMonthColor(date(day).getMonth()),urgency:"normal",notes:"",createdAt:new Date().toISOString()});
 added++
 }));
 save();const latest=quickRows[quickRows.length-1];selected=latest.dates[0];view=date(selected);$("#quickTasks").value="";renderAll();toast(added+" task date"+(added===1?"":"s")+" added to your calendar.")
@@ -125,28 +119,10 @@ $("#closeDeadline").addEventListener("click",()=>$("#deadlineDialog").close());
 $("#deadlineForm").addEventListener("submit",e=>{
 e.preventDefault();const data={title:$("#deadlineTitle").value.trim(),date:$("#deadlineDate").value,subject:$("#deadlineSubject").value,urgency:$("#deadlineUrgency").value,notes:$("#deadlineNotes").value.trim()};
 if(!data.title||!data.date||!data.subject){toast("Add a title, date, and subject first.");return}
-if(editing){const i=state.deadlines.findIndex(x=>x.id===editing);if(i>=0)state.deadlines[i]={...state.deadlines[i],...data}}else state.deadlines.push({id:uid(),...data,createdAt:new Date().toISOString()});
+if(editing){const i=state.deadlines.findIndex(x=>x.id===editing);if(i>=0)state.deadlines[i]={...state.deadlines[i],...data,color:randomMonthColor(date(data.date).getMonth())}}else state.deadlines.push({id:uid(),...data,color:randomMonthColor(date(data.date).getMonth()),createdAt:new Date().toISOString()});
 selected=data.date;view=date(data.date);save();$("#deadlineDialog").close();renderAll();toast(editing?"Deadline updated.":"Task added to your calendar.")
 });
 $("#deleteDeadline").addEventListener("click",()=>{if(!editing)return;const x=state.deadlines.find(d=>d.id===editing);if(!confirm('Delete "'+(x?x.title:"this deadline")+'"?'))return;state.deadlines=state.deadlines.filter(d=>d.id!==editing);save();$("#deadlineDialog").close();renderAll();toast("Deadline deleted.")});
-const manageSubjectsButton=$("#manageSubjects");if(manageSubjectsButton)manageSubjectsButton.addEventListener("click",()=>{$("#subjectsDialog").showModal();renderSubjectEditor()});
-$("#closeSubjects").addEventListener("click",()=>$("#subjectsDialog").close());
-$("#doneSubjects").addEventListener("click",()=>{$("#subjectsDialog").close();renderAll()});
-function renderSubjectEditor(){
-const holder=$("#subjectEditor");holder.innerHTML="";
-const swatches=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#FF3B30","#00A896","#FFFFFF","#24251F"];
-state.subjects.forEach(s=>{
-const row=document.createElement("div");row.className="subject-row";
-row.innerHTML='<label class="subject-name-label">COURSE NAME<input class="subject-name-input" type="text" maxlength="36" value="'+esc(s.name)+'" aria-label="Course name"></label><label class="subject-colour-label"><span>COLOUR</span><input class="subject-hexagon" type="color" value="'+esc(s.color)+'" aria-label="Choose colour for '+esc(s.name)+'"></label><button type="button" class="remove-subject" aria-label="Delete '+esc(s.name)+'" title="Delete subject">×</button><div class="swatch-row" aria-label="More colour choices">'+swatches.map(c=>'<button type="button" class="preset-swatch" data-colour="'+c+'" style="--swatch:'+c+'" aria-label="Use '+c+'"></button>').join("")+'</div>';
-const hex=row.querySelector(".subject-hexagon");
-hex.addEventListener("input",()=>{s.color=hex.value.toLowerCase();save();renderAll()});
-row.querySelector(".subject-name-input").addEventListener("change",e=>{const name=e.target.value.trim();if(!name||state.subjects.some(a=>a.id!==s.id&&a.name.toLowerCase()===name.toLowerCase())){e.target.value=s.name;toast("Choose a unique course name.");return}s.name=name;save();renderSubjectEditor();renderAll();renderOptions($("#deadlineSubject").value)});
-row.querySelectorAll(".preset-swatch").forEach(btn=>btn.addEventListener("click",()=>{s.color=btn.dataset.colour;hex.value=s.color;save();renderAll()}));
-row.querySelector(".remove-subject").addEventListener("click",()=>{if(state.subjects.length<=1){toast("Keep at least one subject colour.");return}if(!confirm("Remove "+s.name+"? Existing deadlines will move to Other if available."))return;let other=state.subjects.find(a=>a.id==="other"&&a.id!==s.id);if(!other){other={id:"other",name:"Other",color:"#c6c1b1"};state.subjects.push(other)}state.deadlines.forEach(d=>{if(d.subject===s.id)d.subject=other.id});state.subjects=state.subjects.filter(a=>a.id!==s.id);save();renderAll();renderSubjectEditor();renderOptions($("#deadlineSubject").value)});
-holder.appendChild(row)
-})
-}
-$("#addSubjectForm").addEventListener("submit",e=>{e.preventDefault();const name=$("#newSubjectName").value.trim();if(!name)return;if(state.subjects.some(s=>s.name.toLowerCase()===name.toLowerCase())){toast("That subject already has a colour.");return}const palette=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#FF3B30"],used=state.subjects.map(s=>s.color.toLowerCase()),color=palette.find(c=>!used.includes(c))||palette[state.subjects.length%palette.length];state.subjects.push({id:uid(),name,color});save();$("#newSubjectName").value="";renderSubjectEditor();renderOptions();renderAll();toast("Subject colour added.")});
 $("#calendarGrid").addEventListener("keydown",e=>{const cell=e.target.closest(".day-cell");if(!cell)return;let step=0;if(e.key==="ArrowLeft")step=-1;else if(e.key==="ArrowRight")step=1;else if(e.key==="ArrowUp")step=-7;else if(e.key==="ArrowDown")step=7;else return;e.preventDefault();const next=date(cell.dataset.date);next.setDate(next.getDate()+step);selected=iso(next);view=date(selected);renderAll();const target=[...$("#calendarGrid").querySelectorAll(".day-cell")].find(el=>el.dataset.date===selected);if(target)target.focus()});
 $("#exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({app:"BusyBee",version:1,exportedAt:new Date().toISOString(),...state},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="busybee-backup-"+today()+".json";a.click();URL.revokeObjectURL(url);toast("Backup downloaded.")});
 $("#importBtn").addEventListener("click",()=>$("#importFile").click());
