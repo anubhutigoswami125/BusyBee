@@ -20,13 +20,8 @@ function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;",
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const c=String(s.color||"").toLowerCase();if(migration[c])s.color=migration[c]});return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[]}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
-const THEME_KEY="busybee-theme-v1";
-function applyTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem(THEME_KEY,theme);const b=$("#themeToggle");if(b){b.innerHTML=(theme==="dark"?"☼":"◐") + " <span>"+(theme==="dark"?"LIGHT":"DARK")+"</span>";b.setAttribute("aria-label","Switch to "+(theme==="dark"?"light":"dark")+" mode");b.title="Switch to "+(theme==="dark"?"light":"dark")+" mode"}}
-// One-time default migration: replace any previously saved light default with dark.
-// After this visit, the theme toggle choice is preserved normally.
-const DARK_DEFAULT_KEY="busybee-dark-default-v1";
-if(!localStorage.getItem(DARK_DEFAULT_KEY)){localStorage.setItem(THEME_KEY,"dark");localStorage.setItem(DARK_DEFAULT_KEY,"1");}
-applyTheme(localStorage.getItem(THEME_KEY)||"dark");
+// BusyBee is permanently dark mode. No theme preference or toggle is used.
+document.documentElement.dataset.theme="dark";
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast("Couldn't save. Download a backup and free some browser storage.")}}
 function subj(id){return state.subjects.find(s=>s.id===id)||state.subjects.find(s=>s.id==="other")||{id:"other",name:"Other",color:"#c6c1b1"}}
 function away(s){return Math.round((date(s)-date(today()))/86400000)}
@@ -150,7 +145,6 @@ holder.appendChild(row)
 })
 }
 $("#addSubjectForm").addEventListener("submit",e=>{e.preventDefault();const name=$("#newSubjectName").value.trim();if(!name)return;if(state.subjects.some(s=>s.name.toLowerCase()===name.toLowerCase())){toast("That subject already has a colour.");return}const palette=["#FF4F87","#FFD400","#35C759","#00C2FF","#9B5DE5","#FF7A00","#F15BB5","#8D99AE","#FF3B30"],used=state.subjects.map(s=>s.color.toLowerCase()),color=palette.find(c=>!used.includes(c))||palette[state.subjects.length%palette.length];state.subjects.push({id:uid(),name,color});save();$("#newSubjectName").value="";renderSubjectEditor();renderOptions();renderAll();toast("Subject colour added.")});
-$("#themeToggle").addEventListener("click",()=>applyTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
 $("#calendarGrid").addEventListener("keydown",e=>{const cell=e.target.closest(".day-cell");if(!cell)return;let step=0;if(e.key==="ArrowLeft")step=-1;else if(e.key==="ArrowRight")step=1;else if(e.key==="ArrowUp")step=-7;else if(e.key==="ArrowDown")step=7;else return;e.preventDefault();const next=date(cell.dataset.date);next.setDate(next.getDate()+step);selected=iso(next);view=date(selected);renderAll();const target=[...$("#calendarGrid").querySelectorAll(".day-cell")].find(el=>el.dataset.date===selected);if(target)target.focus()});
 $("#exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({app:"BusyBee",version:1,exportedAt:new Date().toISOString(),...state},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="busybee-backup-"+today()+".json";a.click();URL.revokeObjectURL(url);toast("Backup downloaded.")});
 $("#importBtn").addEventListener("click",()=>$("#importFile").click());
