@@ -23,6 +23,7 @@ function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;",
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){x.deadlines=x.deadlines.filter(task=>{const title=String(task.title||"").trim().toLowerCase();const day=String(task.date||"");return !((/^c\+\+\s*ca$/.test(title)&&day==="2026-10-30")||(/^biosustain$/.test(title)&&(day==="2026-11-18"||day==="2026-11-19")))});const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const color=String(s.color||"").toLowerCase();if(migration[color])s.color=migration[color]});if(x.paletteVersion!==2){x.deadlines.forEach(task=>{const month=Number(String(task.date||"").slice(5,7))-1;if(month>=0&&month<12)task.color=monthPalettes[month][Math.floor(Math.random()*monthPalettes[month].length)]});x.paletteVersion=2;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}}return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[],paletteVersion:2}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
+let calendarMode="month";
 // BusyBee is permanently dark mode. No theme preference or toggle is used.
 document.documentElement.dataset.theme="dark";
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast("Couldn't save. Download a backup and free some browser storage.")}}
@@ -48,6 +49,26 @@ b.dataset.date=key;b.addEventListener("click",()=>{selected=key;renderAll();$("#
 }
 renderLegend()
 }
+function renderYear(){
+const y=view.getFullYear();$("#monthTitle").textContent=String(y);
+const grid=$("#yearGrid");grid.innerHTML="";
+for(let m=0;m<12;m++){
+const card=document.createElement("section");card.className="year-month";
+const head=document.createElement("button");head.type="button";head.className="year-month-title";head.textContent=new Date(y,m,1,12).toLocaleDateString("en-IN",{month:"long"});head.addEventListener("click",()=>{view=new Date(y,m,1,12);calendarMode="month";renderAll()});card.appendChild(head);
+const weekdays=document.createElement("div");weekdays.className="year-weekdays";["M","T","W","T","F","S","S"].forEach(v=>{const s=document.createElement("span");s.textContent=v;weekdays.appendChild(s)});card.appendChild(weekdays);
+const days=document.createElement("div");days.className="year-days";
+const offset=(new Date(y,m,1,12).getDay()+6)%7,total=new Date(y,m+1,0,12).getDate();
+for(let i=0;i<offset;i++){const blank=document.createElement("span");blank.className="year-day blank";days.appendChild(blank)}
+for(let d=1;d<=total;d++){
+const key=iso(new Date(y,m,d,12)),tasks=state.deadlines.filter(x=>x.date===key);
+const cell=document.createElement("button");cell.type="button";cell.className="year-day"+(key===today()?" today":"")+(tasks.length?" has-tasks":"")+(key===selected?" selected":"");cell.textContent=d;cell.title=pretty(key,{weekday:"long",month:"long",day:"numeric"})+(tasks.length?" · "+tasks.length+" deadline(s)":"");
+if(tasks.length)cell.style.setProperty("--year-task-color",tasks[0].color||subj(tasks[0].subject).color);
+cell.addEventListener("click",()=>{selected=key;view=date(key);calendarMode="month";renderAll();$("#dayNoteDialog").showModal()});days.appendChild(cell)
+}
+card.appendChild(days);grid.appendChild(card)
+}
+$("#calendarGrid").hidden=true;grid.hidden=false;$(".weekdays").hidden=true;$("#viewToggle").textContent="MONTH VIEW";$("#viewToggle").setAttribute("aria-pressed","true");$("#prevMonth").setAttribute("aria-label","Previous year");$("#nextMonth").setAttribute("aria-label","Next year")
+}
 function renderDay(){
 $("#selectedHeading").textContent=pretty(selected,{weekday:"short",month:"short",day:"numeric"});
 const holder=$("#dayDeadlines"),items=sorted(state.deadlines.filter(x=>x.date===selected));holder.innerHTML="";
@@ -55,15 +76,16 @@ if(!items.length){holder.innerHTML='<div class="empty-day">Nothing important for
 items.forEach(x=>{const title=document.createElement("p");title.className="task-title-only";title.textContent=x.title;holder.appendChild(title)})
 }
 function renderOptions(value){$("#deadlineSubject").innerHTML=state.subjects.map(s=>'<option value="'+esc(s.id)+'"'+(s.id===value?" selected":"")+'>'+esc(s.name)+'</option>').join("")}
-function renderAll(){renderCalendar();renderDay();renderQuickPreview()}
+function renderAll(){if(calendarMode==="year")renderYear();else{renderCalendar();$("#calendarGrid").hidden=false;$("#yearGrid").hidden=true;$(".weekdays").hidden=false;$("#viewToggle").textContent="YEAR VIEW";$("#viewToggle").setAttribute("aria-pressed","false");$("#prevMonth").setAttribute("aria-label","Previous month");$("#nextMonth").setAttribute("aria-label","Next month")}renderDay();renderQuickPreview()}
 function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2800)}
 function openDeadline(id){
 editing=id;const x=id?state.deadlines.find(d=>d.id===id):null;$("#deadlineForm").reset();$("#formTitle").innerHTML=(x?"Edit deadline":"Add a deadline")+'<span class="dot">.</span>';$("#formEyebrow").textContent=x?"MAKE A CHANGE":"ADD A TASK";
 $("#deadlineTitle").value=x?x.title:"";$("#deadlineDate").value=x?x.date:selected;renderOptions(x?x.subject:(state.subjects[0]||{}).id);$("#deadlineUrgency").value=x?(x.urgency||"normal"):"normal";$("#deadlineNotes").value=x?(x.notes||""):"";$("#deleteDeadline").hidden=!x;$("#deadlineDialog").showModal();setTimeout(()=>$("#deadlineTitle").focus(),40)
 }
-$("#prevMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1,12);renderCalendar()});
-$("#nextMonth").addEventListener("click",()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1,12);renderCalendar()});
-$("#todayBtn").addEventListener("click",()=>{selected=today();view=date(selected);renderAll()});
+$("#prevMonth").addEventListener("click",()=>{view=calendarMode==="year"?new Date(view.getFullYear()-1,view.getMonth(),1,12):new Date(view.getFullYear(),view.getMonth()-1,1,12);renderAll()});
+$("#nextMonth").addEventListener("click",()=>{view=calendarMode==="year"?new Date(view.getFullYear()+1,view.getMonth(),1,12):new Date(view.getFullYear(),view.getMonth()+1,1,12);renderAll()});
+$("#todayBtn").addEventListener("click",()=>{selected=today();view=date(selected);calendarMode="month";renderAll()});
+$("#viewToggle").addEventListener("click",()=>{calendarMode=calendarMode==="month"?"year":"month";renderAll()});
 $("#shuffleColours").addEventListener("click",()=>{recolorAllTasks();renderAll();toast("All task colours reshuffled using each due month’s palette.")});
 
 $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
