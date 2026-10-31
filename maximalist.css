@@ -557,3 +557,82 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 
 /* Today indicator: a subtle, slightly stronger border without changing the cell fill. */
 #calendarGrid .day-cell.today{border:2px solid #2196F3!important;outline:3px solid #2196F3!important;outline-offset:-3px!important;box-sizing:border-box!important}
+
+
+/* BUSYBEE FAIRYCORE: quiet watercolor paper, rose ink, botanical details */
+:root{--ink:#744253;--muted:#9b7780;--paper:#f5ece8;--paper2:#eee0df;--line:#d9b9c1;--sans:Georgia,serif;--serif:"Palatino Linotype",Palatino,Georgia,serif;--mono:Georgia,serif}
+html,body{background:#e8d6d3!important;color:#704254!important}
+body{padding:22px 18px 36px!important;background:radial-gradient(ellipse at 18% 8%,#fff6f0 0,transparent 34%),linear-gradient(145deg,#e8d3d4,#f4e7e2 55%,#e7d5dc)!important}
+.app-shell{max-width:1400px!important;background:#f5ece8!important;border:1px solid #d8b7c0!important;box-shadow:0 12px 40px #91627420!important;border-radius:4px!important}
+.app-shell:before{opacity:.045!important}
+.topbar{height:64px!important;border-color:#dfc5ca!important;padding:0 4%!important}
+.wordmark{color:#79465a!important;font-family:var(--serif)!important;font-size:23px!important;letter-spacing:0!important}
+.bee-mark{background:#ead0d8!important;border:1px solid #bd8197!important;color:#82485f!important;transform:none!important}
+.local-tag,.eyebrow{color:#a47a87!important}
+.icon-button,.today-button,.nav-arrow,.quick-done,.add-deadline,.save-button,.delete-button{font-family:Georgia,serif!important;letter-spacing:.2px!important;text-transform:none!important;border-radius:3px!important;box-shadow:none!important}
+.icon-button{border:1px solid #d7b5bf!important;color:#825267!important;background:#fbf4f0!important}
+.icon-button:hover,.today-button:hover{background:#ead5dc!important}
+.intro{min-height:260px!important;padding:38px 5%!important;border-bottom:1px solid #dfc5ca!important;background:radial-gradient(ellipse at 78% 25%,#fff8edaa,transparent 30%),radial-gradient(ellipse at 70% 90%,#dba7bb80,transparent 42%),linear-gradient(115deg,#f2e4df,#e9cbd4 52%,#f4e8df)!important;position:relative!important;overflow:hidden!important}
+.intro:after{content:"✿  ❀   ✧     ❀  ✿";position:absolute;right:4%;top:10%;font-size:clamp(34px,5vw,68px);letter-spacing:12px;color:#b77b91;opacity:.34;pointer-events:none;max-width:45%;line-height:1.8}
+.intro .eyebrow{letter-spacing:2px!important}
+.intro h1{font-family:var(--serif)!important;color:#814b62!important;font-size:clamp(38px,4.6vw,58px)!important;letter-spacing:-1px!important;font-weight:500!important}
+.intro h1 em{color:#b56e89!important}
+.intro-copy{color:#896c75!important;font-family:Georgia,serif!important;font-size:14px!important}
+.note-card{background:#f7e9e6!important;border:1px solid #d8b4bf!important;box-shadow:0 5px 16px #99647718!important;transform:rotate(0deg)!important;border-radius:3px!important;color:#75475b!important}
+.tape{background:#d6a4b3!important;opacity:.45!important}
+.note-label{color:#95677a!important}
+.note-card textarea{background:transparent!important;color:#75475b!important;border:0!important;font-family:Georgia,serif!important}
+.quick-done{background:#a96f86!important;color:#fff8f3!important;border:1px solid #a96f86!important;padding:9px 12px!important}
+.workspace{grid-template-columns:minmax(0,1fr) 290px!important;background:#f5ece8!important}
+.calendar-panel{background:#f7efeb!important;background-image:none!important;border-right:1px solid #dfc5ca!important;padding:30px 4%!important}
+.calendar-head{align-items:center!important;margin-bottom:18px!important}
+.month-row{gap:12px!important}
+.month-row h2{font-family:var(--serif)!important;color:#814b62!important;font-size:30px!important;font-weight:500!important}
+.nav-arrow{border:1px solid #d7b5bf!important;color:#87566b!important;background:#fbf4f0!important;border-radius:50%!important}
+.today-button{background:#ead6dc!important;color:#7d4c61!important;border:1px solid #d5afbb!important;padding:9px 13px!important}
+.calendar-actions{display:flex!important;gap:7px!important;flex-wrap:wrap!important}
+.shuffle-button{display:none!important}
+.weekdays{color:#a07786!important;font-family:Georgia,serif!important;letter-spacing:1px!important}
+.weekdays span{padding:8px 0!important}
+.calendar-grid{gap:6px!important}
+.calendar-grid .day-cell{min-height:clamp(66px,8vw,100px)!important;background:#fbf6f2!important;border:1px solid #e2cdd0!important;box-shadow:none!important;border-radius:2px!important;color:#87566b!important;padding:8px!important;transition:background .15s,border-color .15s!important}
+.calendar-grid .day-cell *{display:block!important}
+.calendar-grid .day-cell .day-number{position:static!important;align-self:flex-start!important;background:transparent!important;border:0!important;color:#87566b!important;font:16px Georgia,serif!important;padding:0!important}
+.calendar-grid .day-cell.has-deadlines{background:var(--subject-a,#efd9df)!important;border:1px solid #d3aeba!important}
+.calendar-grid .day-cell.today{border:2px solid #2196f3!important;outline:2px solid #2196f3!important;outline-offset:-3px!important}
+.calendar-grid .day-cell.selected{box-shadow:inset 0 0 0 1px #a96f86!important;border-color:#a96f86!important}
+.calendar-grid .day-cell.outside{background:#f1e9e5!important;opacity:.45!important}
+.calendar-grid .day-cell:hover{transform:none!important;border-color:#b98298!important}
+.credits-panel,.side-panel{background:#f1e3e1!important;border:0!important;box-shadow:none!important;color:#805365!important}
+.credits-panel{border-left:1px solid #dfc5ca!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;padding:26px!important;gap:14px!important}
+.credits-avatar{border:2px solid #f9efec!important;outline:1px solid #c89baa!important;box-shadow:none!important}
+.credits-flower{color:#b77b91!important;text-shadow:none!important}
+.credits-copy h3{font-family:var(--serif)!important;color:#805365!important;font-size:20px!important}
+.specialization-tag{background:#ead2d9!important;color:#88576b!important;border:1px solid #d8b4bf!important;font-family:Georgia,serif!important}
+.tech-stack,.credits-copy p{color:#977784!important}
+.credits-links a{color:#88576b!important;border-color:#d3aeba!important}
+.footer{color:#a17d89!important;border-color:#dfc5ca!important;font-family:Georgia,serif!important;letter-spacing:.3px!important}
+.footer-links a{color:#986b7b!important;border-color:#d6b6bf!important}
+.day-note-dialog,.modal{background:#f8efeb!important;color:#75475b!important;border:1px solid #d5b3bd!important;border-radius:4px!important;box-shadow:0 12px 40px #70425425!important}
+.day-note-dialog::backdrop,.modal::backdrop{background:#5c3c4c55!important;backdrop-filter:blur(4px)}
+.day-note-inner,.modal form{color:#75475b!important}
+.side-head h2,.modal h2{font-family:var(--serif)!important;color:#814b62!important}
+.add-deadline,.save-button{background:#a96f86!important;color:#fff8f3!important;border:1px solid #a96f86!important}
+.deadline-card,.subject-row{background:#fcf5f1!important;border:1px solid #e0c8ce!important;color:#75475b!important}
+.empty-day{background:#fbf5f1!important;border:1px dashed #d7b5bf!important;color:#a17d89!important}
+.modal input,.modal select,.modal textarea{background:#fff9f5!important;border:1px solid #dfc5ca!important;color:#75475b!important}
+.close-modal{color:#87566b!important}
+.year-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+.year-grid[hidden],.calendar-grid[hidden],.weekdays[hidden]{display:none!important}
+.year-month{background:#fbf5f1!important;border:1px solid #dfc5ca!important;padding:13px!important;min-width:0!important}
+.year-month-title{display:block!important;width:100%!important;text-align:left!important;background:transparent!important;border:0!important;color:#89566b!important;font:20px Georgia,serif!important;padding:0 0 9px!important;cursor:pointer!important}
+.year-weekdays,.year-days{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:3px!important;text-align:center!important}
+.year-weekdays{font:10px Georgia,serif!important;color:#b18492!important;padding-bottom:5px!important}
+.year-day{min-width:0!important;aspect-ratio:1!important;border:0!important;background:transparent!important;color:#896172!important;font:11px Georgia,serif!important;padding:0!important;border-radius:50%!important;cursor:pointer!important}
+.year-day.blank{pointer-events:none!important}
+.year-day.has-tasks{background:var(--year-task-color,#e6c4cf)!important;color:#684052!important;font-weight:bold!important}
+.year-day.today{outline:1.5px solid #2196f3!important;outline-offset:-1px!important}
+.year-day.selected{box-shadow:inset 0 0 0 1px #a96f86!important}
+.year-day:hover{background:#ead5dc!important}
+@media(max-width:900px){.workspace{grid-template-columns:1fr!important}.credits-panel{border-left:0!important;border-top:1px solid #dfc5ca!important;display:grid!important;grid-template-columns:80px minmax(0,1fr)!important}.year-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){body{padding:8px!important}.intro{padding:24px 5%!important;min-height:220px!important;gap:12px!important;align-items:flex-start!important}.intro:after{font-size:28px!important;right:2%!important}.intro h1{font-size:34px!important}.note-card{width:170px!important;margin:0!important;padding:14px!important}.calendar-panel{padding:18px 10px!important}.calendar-head{align-items:flex-start!important;gap:12px!important;flex-direction:column!important}.calendar-grid{gap:3px!important}.calendar-grid .day-cell{min-height:48px!important;padding:5px!important}.calendar-grid .day-cell .day-number{font-size:13px!important}.year-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.year-month{padding:8px!important}.year-month-title{font-size:16px!important}.year-day{font-size:9px!important}.topbar{padding:0 12px!important}.top-actions{gap:5px!important;flex-wrap:wrap!important}.local-tag{display:none!important}.icon-button{padding:7px!important;font-size:9px!important}}
