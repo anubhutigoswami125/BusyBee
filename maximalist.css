@@ -556,4 +556,4 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 
 
 /* Today indicator: a subtle, slightly stronger border without changing the cell fill. */
-#calendarGrid .day-cell.today{border:2px solid #FFD700!important;box-sizing:border-box!important}
+#calendarGrid .day-cell.today{border:2px solid #2196F3!important;box-sizing:border-box!important}
