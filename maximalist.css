@@ -394,7 +394,7 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 @media(max-width:560px){html[data-theme="dark"] .intro{padding:20px!important;gap:18px!important}html[data-theme="dark"] .note-card{padding:16px!important}html[data-theme="dark"] .intro:before{left:3%!important;bottom:26%!important;opacity:.28!important}}
 
 /* Calendar cleanup: hide dates outside the displayed month. */
-.calendar-grid .day-cell.outside{display:none!important}
+.calendar-grid .day-cell.outside{visibility:hidden!important;pointer-events:none!important}
 /* Date numbers: visible at the top-left of each date cell. */
 .calendar-grid .day-cell{position:relative!important}
 .calendar-grid .day-cell .day-number{display:block!important;position:absolute!important;top:6px!important;left:7px!important;z-index:2!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;color:#171717!important;font:800 12px/1.2 var(--sans,Arial,sans-serif)!important;text-align:left!important}
@@ -455,7 +455,7 @@ html[data-theme="dark"] .specialization-tag,html[data-theme="dark"] .sticker{bac
 .task-title-only{margin:0;padding:12px 14px;border:2px solid #171017;border-radius:0;background:#fff;color:#171017;font-weight:800;font-size:1rem;box-shadow:4px 4px 0 #ec008c;}
 .day-deadlines{display:grid;gap:12px;}
 
-#calendarGrid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;visibility:visible!important}#calendarGrid .day-cell{display:flex!important;visibility:visible!important;min-width:0}#calendarGrid .day-cell.outside{display:none!important}#calendarGrid .day-cell.has-deadlines{background:var(--subject-color,var(--subject-a,#ff4fa3))!important}#calendarGrid .day-cell.has-deadlines:nth-child(3n+1),#calendarGrid .day-cell.has-deadlines:nth-child(3n+2),#calendarGrid .day-cell.has-deadlines:nth-child(3n){background:var(--subject-color,var(--subject-a,#ff4fa3))!important}.day-note-dialog .empty-day{color:#fff4fa!important;font-weight:800;line-height:1.5}
+#calendarGrid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;visibility:visible!important}#calendarGrid .day-cell{display:flex!important;visibility:visible!important;min-width:0}#calendarGrid .day-cell.outside{visibility:hidden!important;pointer-events:none!important}#calendarGrid .day-cell.has-deadlines{background:var(--subject-color,var(--subject-a,#ff4fa3))!important}#calendarGrid .day-cell.has-deadlines:nth-child(3n+1),#calendarGrid .day-cell.has-deadlines:nth-child(3n+2),#calendarGrid .day-cell.has-deadlines:nth-child(3n){background:var(--subject-color,var(--subject-a,#ff4fa3))!important}.day-note-dialog .empty-day{color:#fff4fa!important;font-weight:800;line-height:1.5}
 
 /* Calendar cells stay simple: colour + date number, no urgency banners. */
 #calendarGrid .day-cell.overdue-cell:after,#calendarGrid .day-cell.due-today-cell:before{display:none!important;content:none!important}
