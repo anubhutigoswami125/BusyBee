@@ -170,8 +170,84 @@ body{background:linear-gradient(145deg,#f5f7f5,#edf2ef)!important;font-family:Ge
 .modal,.day-note-dialog,#deadlineDialog{background:#f9fbf9!important;color:#506257!important;border:1px solid #dce5df!important}
 input,select,textarea{accent-color:#829a89}
 @media(max-width:800px){.workspace{grid-template-columns:1fr!important}.credits-panel{border-left:0!important;border-top:1px solid #dce4df!important}}
+
+/* User-selectable dark mode */
+html[data-theme="dark"]{color-scheme:dark!important}
+html[data-theme="dark"],html[data-theme="dark"] body{background:#171e1b!important;color:#dce6df!important}
+html[data-theme="dark"] body{background:linear-gradient(145deg,#1a2420,#18211e)!important}
+html[data-theme="dark"] .app-shell{background:#202a25!important;border-color:#34443b!important;box-shadow:0 16px 48px #0005!important}
+html[data-theme="dark"] .topbar,html[data-theme="dark"] .workspace,html[data-theme="dark"] .calendar-panel{background:#202a25!important;border-color:#34443b!important}
+html[data-theme="dark"] .wordmark,html[data-theme="dark"] .wordmark span{color:#d5e3d8!important}
+html[data-theme="dark"] .wordmark .dot{color:#a8c0ae!important}
+html[data-theme="dark"] .bee-mark{background:#2d3c33!important;border-color:#405347!important;color:#c0d2c4!important}
+html[data-theme="dark"] .intro{background:linear-gradient(115deg,#26352d,#293934 58%,#293331)!important;border-color:#394a40!important}
+html[data-theme="dark"] .intro h1,html[data-theme="dark"] .intro h1 em,html[data-theme="dark"] .month-row h2,html[data-theme="dark"] .side-head h2,html[data-theme="dark"] .credits-copy h3{color:#d2e1d5!important}
+html[data-theme="dark"] .intro-copy,html[data-theme="dark"] .eyebrow,html[data-theme="dark"] .local-tag,html[data-theme="dark"] .weekdays{color:#a1b1a6!important}
+html[data-theme="dark"] .note-card{background:#29352e!important;color:#d1dfd4!important;border-color:#405044!important;box-shadow:0 5px 18px #0003!important}
+html[data-theme="dark"] #quickTasks{background:repeating-linear-gradient(transparent 0 28px,#39483e 28px 29px)!important;color:#d9e4dc!important;border-color:#405044!important}
+html[data-theme="dark"] #quickTasks::placeholder{color:#8fa196!important}
+html[data-theme="dark"] .calendar-grid .day-cell,html[data-theme="dark"] .calendar-grid .day-cell:nth-child(n){background:#29352f!important;color:#d0ddd3!important;border-color:#3b4a40!important}
+html[data-theme="dark"] .calendar-grid .day-cell.has-deadlines{background:color-mix(in srgb,var(--subject-color,#647c6a) 58%,#26332b)!important;color:#f0f5f0!important;border-color:#526b59!important}
+html[data-theme="dark"] .calendar-grid .day-cell.today{outline-color:#a8c5ad!important;border-color:#a8c5ad!important}
+html[data-theme="dark"] .calendar-grid .day-cell.selected{box-shadow:inset 0 0 0 1px #a8c5ad!important;border-color:#a8c5ad!important}
+html[data-theme="dark"] .nav-arrow,html[data-theme="dark"] .today-button,html[data-theme="dark"] .icon-button{background:#2c3931!important;color:#d0dfd4!important;border-color:#46584b!important}
+html[data-theme="dark"] .credits-panel{background:#1b2520!important;border-color:#34443b!important;color:#c0cec4!important}
+html[data-theme="dark"] .credits-copy p,html[data-theme="dark"] .tech-stack,html[data-theme="dark"] .credits-links a,html[data-theme="dark"] .footer{color:#9cac9f!important}
+html[data-theme="dark"] .specialization-tag{background:#304036!important;color:#c1d2c5!important;border-color:#43574a!important}
+html[data-theme="dark"] .footer{background:#1b2520!important;border-color:#34443b!important}
+html[data-theme="dark"] .day-note-dialog,html[data-theme="dark"] .modal,html[data-theme="dark"] #deadlineDialog{background:#222e27!important;color:#d7e3da!important;border-color:#46594b!important}
+html[data-theme="dark"] .day-note-dialog .deadline-card,html[data-theme="dark"] .deadline-card,html[data-theme="dark"] .subject-row,html[data-theme="dark"] .empty-day{background:#2b3930!important;color:#d5e1d8!important;border-color:#405246!important}
+html[data-theme="dark"] .day-note-dialog .deadline-card h3,html[data-theme="dark"] .deadline-card h3{color:#d5e1d8!important}
+html[data-theme="dark"] .deadline-meta,html[data-theme="dark"] .deadline-notes{color:#a3b1a7!important}
+html[data-theme="dark"] .modal input,html[data-theme="dark"] .modal select,html[data-theme="dark"] .modal textarea,html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#1c2721!important;color:#e0e9e2!important;border-color:#46594b!important}
+html[data-theme="dark"] .day-event{background:#34443a!important;color:#e0e9e2!important}
+html[data-theme="dark"] .year-month{background:#26332b!important;border-color:#3c4d41!important}
+html[data-theme="dark"] .year-month-title,html[data-theme="dark"] .year-day{color:#c7d7cb!important}
+html[data-theme="dark"] .year-day.has-tasks{background:#405748!important;color:#edf4ee!important}
+html[data-theme="dark"] .toast{background:#34483a!important;color:#e0ebe2!important;border-color:#4c6653!important}
+html[data-theme="dark"] .quick-task-row{color:#e0e9e2!important}
+html[data-theme="dark"] .theme-toggle{background:#35453a!important;color:#e4eee6!important;border-color:#607666!important}
+@media(max-width:680px){.theme-toggle span{display:inline!important}}
 </style>
-</head><body><div class="app-shell"><header class="topbar"><a class="wordmark" href="#"><span class="bee-mark">b.</span><span>busybee<span class="dot">.</span></span></a><div class="top-actions"><span class="local-tag"><span class="live-dot"></span> SAVED ON THIS DEVICE</span><button class="icon-button" id="exportBtn">↗ <span>BACK UP</span></button><button class="icon-button" id="importBtn">↙ <span>RESTORE BACKUP</span></button><button class="icon-button clear-calendar-button" id="clearCalendarBtn" title="Remove all deadlines from this calendar">↺ <span>CLEAR CALENDAR</span></button><input type="file" id="importFile" accept="application/json,.json" hidden></div></header>
+<style id="busybee-dark-mode">
+/* User-selectable dark mode */
+html[data-theme="dark"]{color-scheme:dark!important}
+html[data-theme="dark"],html[data-theme="dark"] body{background:#171e1b!important;color:#dce6df!important}
+html[data-theme="dark"] body{background:linear-gradient(145deg,#1a2420,#18211e)!important}
+html[data-theme="dark"] .app-shell{background:#202a25!important;border-color:#34443b!important;box-shadow:0 16px 48px #0005!important}
+html[data-theme="dark"] .topbar,html[data-theme="dark"] .workspace,html[data-theme="dark"] .calendar-panel{background:#202a25!important;border-color:#34443b!important}
+html[data-theme="dark"] .wordmark,html[data-theme="dark"] .wordmark span{color:#d5e3d8!important}
+html[data-theme="dark"] .wordmark .dot{color:#a8c0ae!important}
+html[data-theme="dark"] .bee-mark{background:#2d3c33!important;border-color:#405347!important;color:#c0d2c4!important}
+html[data-theme="dark"] .intro{background:linear-gradient(115deg,#26352d,#293934 58%,#293331)!important;border-color:#394a40!important}
+html[data-theme="dark"] .intro h1,html[data-theme="dark"] .intro h1 em,html[data-theme="dark"] .month-row h2,html[data-theme="dark"] .side-head h2,html[data-theme="dark"] .credits-copy h3{color:#d2e1d5!important}
+html[data-theme="dark"] .intro-copy,html[data-theme="dark"] .eyebrow,html[data-theme="dark"] .local-tag,html[data-theme="dark"] .weekdays{color:#a1b1a6!important}
+html[data-theme="dark"] .note-card{background:#29352e!important;color:#d1dfd4!important;border-color:#405044!important;box-shadow:0 5px 18px #0003!important}
+html[data-theme="dark"] #quickTasks{background:repeating-linear-gradient(transparent 0 28px,#39483e 28px 29px)!important;color:#d9e4dc!important;border-color:#405044!important}
+html[data-theme="dark"] #quickTasks::placeholder{color:#8fa196!important}
+html[data-theme="dark"] .calendar-grid .day-cell,html[data-theme="dark"] .calendar-grid .day-cell:nth-child(n){background:#29352f!important;color:#d0ddd3!important;border-color:#3b4a40!important}
+html[data-theme="dark"] .calendar-grid .day-cell.has-deadlines{background:color-mix(in srgb,var(--subject-color,#647c6a) 58%,#26332b)!important;color:#f0f5f0!important;border-color:#526b59!important}
+html[data-theme="dark"] .calendar-grid .day-cell.today{outline-color:#a8c5ad!important;border-color:#a8c5ad!important}
+html[data-theme="dark"] .calendar-grid .day-cell.selected{box-shadow:inset 0 0 0 1px #a8c5ad!important;border-color:#a8c5ad!important}
+html[data-theme="dark"] .nav-arrow,html[data-theme="dark"] .today-button,html[data-theme="dark"] .icon-button{background:#2c3931!important;color:#d0dfd4!important;border-color:#46584b!important}
+html[data-theme="dark"] .credits-panel{background:#1b2520!important;border-color:#34443b!important;color:#c0cec4!important}
+html[data-theme="dark"] .credits-copy p,html[data-theme="dark"] .tech-stack,html[data-theme="dark"] .credits-links a,html[data-theme="dark"] .footer{color:#9cac9f!important}
+html[data-theme="dark"] .specialization-tag{background:#304036!important;color:#c1d2c5!important;border-color:#43574a!important}
+html[data-theme="dark"] .footer{background:#1b2520!important;border-color:#34443b!important}
+html[data-theme="dark"] .day-note-dialog,html[data-theme="dark"] .modal,html[data-theme="dark"] #deadlineDialog{background:#222e27!important;color:#d7e3da!important;border-color:#46594b!important}
+html[data-theme="dark"] .day-note-dialog .deadline-card,html[data-theme="dark"] .deadline-card,html[data-theme="dark"] .subject-row,html[data-theme="dark"] .empty-day{background:#2b3930!important;color:#d5e1d8!important;border-color:#405246!important}
+html[data-theme="dark"] .day-note-dialog .deadline-card h3,html[data-theme="dark"] .deadline-card h3{color:#d5e1d8!important}
+html[data-theme="dark"] .deadline-meta,html[data-theme="dark"] .deadline-notes{color:#a3b1a7!important}
+html[data-theme="dark"] .modal input,html[data-theme="dark"] .modal select,html[data-theme="dark"] .modal textarea,html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#1c2721!important;color:#e0e9e2!important;border-color:#46594b!important}
+html[data-theme="dark"] .day-event{background:#34443a!important;color:#e0e9e2!important}
+html[data-theme="dark"] .year-month{background:#26332b!important;border-color:#3c4d41!important}
+html[data-theme="dark"] .year-month-title,html[data-theme="dark"] .year-day{color:#c7d7cb!important}
+html[data-theme="dark"] .year-day.has-tasks{background:#405748!important;color:#edf4ee!important}
+html[data-theme="dark"] .toast{background:#34483a!important;color:#e0ebe2!important;border-color:#4c6653!important}
+html[data-theme="dark"] .quick-task-row{color:#e0e9e2!important}
+html[data-theme="dark"] .theme-toggle{background:#35453a!important;color:#e4eee6!important;border-color:#607666!important}
+@media(max-width:680px){.theme-toggle span{display:inline!important}}
+</style></head><body><div class="app-shell"><header class="topbar"><a class="wordmark" href="#"><span class="bee-mark">b.</span><span>busybee<span class="dot">.</span></span></a><div class="top-actions"><button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">☾ <span>DARK MODE</span></button><span class="local-tag"><span class="live-dot"></span> SAVED ON THIS DEVICE</span><button class="icon-button" id="exportBtn">↗ <span>BACK UP</span></button><button class="icon-button" id="importBtn">↙ <span>RESTORE BACKUP</span></button><button class="icon-button clear-calendar-button" id="clearCalendarBtn" title="Remove all deadlines from this calendar">↺ <span>CLEAR CALENDAR</span></button><input type="file" id="importFile" accept="application/json,.json" hidden></div></header>
 <main><section class="intro"><div><p class="eyebrow">ACADEMIC DEADLINES, AT A GLANCE</p><h1>Stop guessing<br>how heavy <em>your week is.</em></h1><p class="intro-copy">A softer space for your deadlines. Gather your plans, give each day a little colour, and take things one step at a time.</p></div><div class="note-card task-composer"><span class="tape"></span><label class="note-label" for="quickTasks"><span class="note-star" aria-hidden="true">BB / 01</span><span>YOUR STICKY-NOTE INBOX</span></label><textarea id="quickTasks" rows="4" spellcheck="false" placeholder="Write a task and its date, e.g. Genetics recoup 5 Nov" aria-label="Write tasks and dates, one per line"></textarea><button type="button" id="quickTasksDone" class="quick-done">SAVE NOTE</button></div></section>
 <section class="workspace"><div class="calendar-panel"><div class="calendar-head"><div><p class="eyebrow">THE BIG PICTURE</p><div class="month-row"><button id="prevMonth" class="nav-arrow" aria-label="Previous month">←</button><h2 id="monthTitle">October 2026</h2><button id="nextMonth" class="nav-arrow" aria-label="Next month">→</button></div></div><div class="calendar-actions"><button class="today-button" id="todayBtn">TODAY</button><button class="today-button view-toggle" id="viewToggle" aria-pressed="false">YEAR VIEW</button><button class="today-button shuffle-button" id="shuffleColours">SOFTEN COLOURS</button></div></div><div class="weekdays" aria-hidden="true"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span></div><div class="calendar-grid" id="calendarGrid" aria-label="Monthly calendar"></div><div class="year-grid" id="yearGrid" aria-label="Full year calendar" hidden></div></div><aside class="credits-panel" aria-label="BusyBee credits"><div class="credits-avatar-wrap"><div class="credits-flower" aria-hidden="true">✿</div><img class="credits-avatar" src="https://i.pinimg.com/736x/ee/dd/cd/eeddcdb46f9b87b65ce4bc10934b0d46.jpg" alt="Anubhuti" loading="lazy"></div><div class="credits-copy"><p class="eyebrow">MADE WITH A LITTLE CHAOS</p><h3>BusyBee was made by Anubhuti.</h3><span class="specialization-tag">✦ INTERACTIVE WEB APP</span><p>A tiny corner of the internet for deadlines, colourful plans, and getting through the semester.</p><p class="tech-stack"><strong>TECH STACK & VIBE CHECK</strong><br>HTML · CSS · JavaScript · LocalStorage · a quieter, calmer way to plan</p><div class="credits-links"><a href="https://github.com/anubhutigoswami125/BusyBee" target="_blank" rel="noreferrer">GITHUB ↗</a><a href="https://www.linkedin.com/in/anubhuti-goswami-b6382137b" target="_blank" rel="noreferrer">LINKEDIN ↗</a><a href="https://anubhutigoswami125.github.io/#ticker" target="_blank" rel="noreferrer">PORTFOLIO ↗</a><a href="mailto:anubhutiworkk@gmail.com">SAY HI 👋</a></div></div></aside>
 <dialog id="dayNoteDialog" class="day-note-dialog"><div class="day-note-inner"><div class="side-head"><div><h2 id="selectedHeading">Pick a date</h2></div><button type="button" class="close-modal day-note-close" id="closeDayNote" aria-label="Close day details">×</button></div><div id="dayDeadlines" class="day-deadlines"></div><button class="add-deadline" id="addDeadlineBtn"><span>＋</span> ADD A DEADLINE</button></div></dialog></section>
