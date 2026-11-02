@@ -42,8 +42,22 @@ x.paletteVersion=4;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}
 }return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[],paletteVersion:2}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
 let calendarMode="month";
-// BusyBee uses a calm, light botanical palette.
-document.documentElement.dataset.theme="light";
+// Persist the user's light/dark theme choice on this device.
+const THEME_KEY="busybee-theme";
+function applyTheme(theme){
+ const dark=theme==="dark";
+ document.documentElement.dataset.theme=dark?"dark":"light";
+ const button=$("#themeToggle");
+ if(button){
+  button.innerHTML=dark?'☀ <span>LIGHT MODE</span>':'☾ <span>DARK MODE</span>';
+  button.setAttribute("aria-pressed",dark?"true":"false");
+  button.setAttribute("aria-label",dark?"Switch to light mode":"Switch to dark mode");
+ }
+ try{localStorage.setItem(THEME_KEY,dark?"dark":"light")}catch(e){}
+}
+let savedTheme="light";try{savedTheme=localStorage.getItem(THEME_KEY)||"light"}catch(e){}
+applyTheme(savedTheme==="dark"?"dark":"light");
+$("#themeToggle").addEventListener("click",()=>applyTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast("Couldn't save. Download a backup and free some browser storage.")}}
 function subj(id){return state.subjects.find(s=>s.id===id)||state.subjects.find(s=>s.id==="other")||{id:"other",name:"Other",color:"#c6c1b1"}}
 function away(s){return Math.round((date(s)-date(today()))/86400000)}
