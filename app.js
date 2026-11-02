@@ -34,11 +34,11 @@ function today(){return iso(new Date())}
 function pretty(s,opts){return date(s).toLocaleDateString("en-IN",opts||{weekday:"short",month:"short",day:"numeric"})}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){x.deadlines=x.deadlines.filter(task=>{const title=String(task.title||"").trim().toLowerCase();const day=String(task.date||"");return !((/^c\+\+\s*ca$/.test(title)&&day==="2026-10-30")||(/^biosustain$/.test(title)&&(day==="2026-11-18"||day==="2026-11-19")))});const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const color=String(s.color||"").toLowerCase();if(migration[color])s.color=migration[color]});if(x.paletteVersion!==3){
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){x.deadlines=x.deadlines.filter(task=>{const title=String(task.title||"").trim().toLowerCase();const day=String(task.date||"");return !((/^c\+\+\s*ca$/.test(title)&&day==="2026-10-30")||(/^biosustain$/.test(title)&&(day==="2026-11-18"||day==="2026-11-19")))});const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const color=String(s.color||"").toLowerCase();if(migration[color])s.color=migration[color]});if(x.paletteVersion!==4){
 const calmMap={"#FF4F87":"#C9B0B2","#FFD400":"#C8BFA6","#35C759":"#9BAF9A","#00C2FF":"#A9B8C8","#9B5DE5":"#B6B0C2","#FF7A00":"#C5B8A8","#F15BB5":"#C9B0B2","#8D99AE":"#B8BDB5","#E8A7A6":"#C9B0B2","#F5CC55":"#C8BFA6","#B6C99A":"#9BAF9A","#9EC5CF":"#A9B8C8","#BCB1D9":"#B6B0C2"};
 x.subjects.forEach(s=>{const c=String(s.color||"").toUpperCase();if(calmMap[c])s.color=calmMap[c]});
-x.deadlines.forEach(task=>{const c=String(task.color||"").toUpperCase();if(calmMap[c])task.color=calmMap[c]});
-x.paletteVersion=3;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}
+const monthUse={};x.deadlines.forEach(task=>{const m=Math.max(0,Math.min(11,Number(String(task.date||"").slice(5,7))-1));const n=monthUse[m]||0;task.color=monthPalettes[m][n%monthPalettes[m].length];monthUse[m]=n+1});
+x.paletteVersion=4;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}
 }return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[],paletteVersion:2}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
 let calendarMode="month";
@@ -123,7 +123,7 @@ $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
 $("#closeDayNote").addEventListener("click",()=>$("#dayNoteDialog").close());
 $("#dayNoteDialog").addEventListener("click",e=>{if(e.target===$("#dayNoteDialog"))$("#dayNoteDialog").close()});
 // Quick capture: one scribbled line per task, with a date and an individual colour.
-const quickPalette=["#8ED1FC","#EC008C","#1B365D","#FF6F61","#FF4D88","#C80036","#00C2D1","#FFD700","#7CB342","#59C3C3","#E5A93C","#FF85A1","#FFE600","#D8B4F8","#98FF98","#FFB7B2","#00875A","#D81B60","#FFF176","#1B4D3E","#00A896","#FF6B35","#FF8811","#FFD166","#0055A5","#FF1D25","#FFEB3B","#E040FB","#FF9E7D","#FFC107","#00B4D8","#8AC926","#D4AF37","#005B60","#C85A17","#8E1600","#FF6700","#4A154B","#121212","#00F5D4","#800020","#E09F3E","#556B2F","#9E2A2B","#0B5345","#D32F2F","#D4AF37","#E0F7FA"];
+const quickPalette=["#DCE6E0","#B9C9C1","#AAB9B0","#E5E8DF","#D8E1E5","#B9C9D0","#A9BBC2","#E4E9E8","#DDE5D8","#BCCCB7","#A9BBA3","#E9EBDD","#E3E6D9","#C8D2BE","#B8C5AE","#EAE8DC","#D9E5DF","#B6C9BE","#A5BCAF","#E4EBE5","#D8E3E2","#B7C9C7","#A8BCBA","#E7ECE8","#D9E1E9","#B8C6D4","#A9B8C8","#E6EAF0","#E4E2DA","#CBC8B9","#B9B6A8","#ECEAE2"];
 let quickRows=[];
 function parseQuickLine(raw,index){
 const monthMap={jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
