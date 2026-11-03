@@ -3,42 +3,42 @@
 const $ = s => document.querySelector(s);
 const KEY = "busybee-v1";
 const defaults = [
-{id:"genetics",name:"Genetics",color:"#9BAF9A"},
-{id:"biochem",name:"Biochemistry",color:"#C8BFA6"},
-{id:"micro",name:"Microbiology",color:"#A8BFC0"},
-{id:"python",name:"Python",color:"#A9B8C8"},
-{id:"cpp",name:"C++",color:"#B6B0C2"},
-{id:"data",name:"Data Analysis",color:"#C5B8A8"},
-{id:"english",name:"English / PEL",color:"#C9B0B2"},
-{id:"other",name:"Other",color:"#B8BDB5"}
+{id:"genetics",name:"Genetics",color:"#EFA5C8"},
+{id:"biochem",name:"Biochemistry",color:"#F3B8D2"},
+{id:"micro",name:"Microbiology",color:"#E99ABB"},
+{id:"python",name:"Python",color:"#F7C6D7"},
+{id:"cpp",name:"C++",color:"#EFAED2"},
+{id:"data",name:"Data Analysis",color:"#F6C7E2"},
+{id:"english",name:"English / PEL",color:"#F1B0C8"},
+{id:"other",name:"Other",color:"#F7D9E6"}
 ];
 const monthPalettes=[
-["#AFC5B5","#9DB9A8","#8EAB99","#B8C9BD"],
-["#AFC4CC","#9BB7C2","#88A8B5","#B8CDD2"],
-["#B4C6A7","#9FB98F","#8DA77E","#C2D0B8"],
-["#C1C9A9","#AEBB91","#9BAA7D","#CDD4B9"],
-["#A9C4B6","#91B5A3","#7FA68F","#B8D0C2"],
-["#A6C2BE","#8FB5B0","#7BA39E","#B9D0CB"],
-["#A9BBD0","#91A9C3","#7E98B5","#BDCADB"],
-["#C5BEAA","#B1A98F","#9D967D","#D2CBB9"],
-["#B7C4AE","#A2B495","#8FA380","#C5D0BB"],
-["#AEC5BE","#97B7AE","#83A79D","#BED1C9"],
-["#AFC5B6","#98B8A5","#84A88F","#BED1C3"],
-["#B1C7C1","#9BBAB1","#86A99F","#C0D2CC"]
+["#F8CFE0","#F3B8D2","#EFA5C8","#F7D9E6"],
+["#F7C4D8","#F0AFCB","#E99ABB","#F6D2E1"],
+["#F8D0DC","#F2B6CD","#EBA2C1","#F7DCE5"],
+["#F5C5DF","#EFAED2","#E99AC7","#F4D5E8"],
+["#F8C9D9","#F1B0C8","#E99BBB","#F6D7E2"],
+["#F6C7E2","#EFAED6","#E69BCB","#F4D5E9"],
+["#F7C6D7","#F0A9C4","#E894B6","#F5D4E0"],
+["#F6CBE0","#EFB4D2","#E69FC7","#F5D9E9"],
+["#F8D0E4","#F1B8D7","#EAA3CC","#F6DCEC"],
+["#F6C5D8","#EFAAC8","#E795B9","#F4D4E0"],
+["#F7C9E1","#F0AED2","#E89AC7","#F5D7E8"],
+["#F6C8D9","#EEA9C5","#E793B5","#F4D4DF"]
 ];
 function randomMonthColor(month){const p=monthPalettes[month];return p[Math.floor(Math.random()*p.length)]}
-function recolorAllTasks(){state.deadlines.forEach(task=>{const month=date(task.date).getMonth(),palette=monthPalettes[month],previous=String(task.color||"").toUpperCase(),choices=palette.filter(color=>color!==previous),pool=choices.length?choices:palette;task.color=pool[Math.floor(Math.random()*pool.length)]});state.paletteVersion=5;save()}
+function recolorAllTasks(){state.deadlines.forEach(task=>{const month=date(task.date).getMonth(),palette=monthPalettes[month],previous=String(task.color||"").toUpperCase(),choices=palette.filter(color=>color!==previous),pool=choices.length?choices:palette;task.color=pool[Math.floor(Math.random()*pool.length)]});state.paletteVersion=6;save()}
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function date(s){const a=s.split("-").map(Number);return new Date(a[0],a[1]-1,a[2],12)}
 function today(){return iso(new Date())}
 function pretty(s,opts){return date(s).toLocaleDateString("en-IN",opts||{weekday:"short",month:"short",day:"numeric"})}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){x.deadlines=x.deadlines.filter(task=>{const title=String(task.title||"").trim().toLowerCase();const day=String(task.date||"");return !((/^c\+\+\s*ca$/.test(title)&&day==="2026-10-30")||(/^biosustain$/.test(title)&&(day==="2026-11-18"||day==="2026-11-19")))});const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const color=String(s.color||"").toLowerCase();if(migration[color])s.color=migration[color]});if(x.paletteVersion!==5){
-const calmMap={"#FF4F87":"#C9B0B2","#FFD400":"#C8BFA6","#35C759":"#9BAF9A","#00C2FF":"#A9B8C8","#9B5DE5":"#B6B0C2","#FF7A00":"#C5B8A8","#F15BB5":"#C9B0B2","#8D99AE":"#B8BDB5","#E8A7A6":"#C9B0B2","#F5CC55":"#C8BFA6","#B6C99A":"#9BAF9A","#9EC5CF":"#A9B8C8","#BCB1D9":"#B6B0C2"};
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&Array.isArray(x.subjects)&&Array.isArray(x.deadlines)){x.deadlines=x.deadlines.filter(task=>{const title=String(task.title||"").trim().toLowerCase();const day=String(task.date||"");return !((/^c\+\+\s*ca$/.test(title)&&day==="2026-10-30")||(/^biosustain$/.test(title)&&(day==="2026-11-18"||day==="2026-11-19")))});const migration={"#e8a7a6":"#FF4F87","#f5cc55":"#FFD400","#b6c99a":"#35C759","#9ec5cf":"#00C2FF","#bcb1d9":"#9B5DE5","#e6b58a":"#FF7A00","#d7b8c9":"#F15BB5","#c6c1b1":"#8D99AE"};x.subjects.forEach(s=>{const color=String(s.color||"").toLowerCase();if(migration[color])s.color=migration[color]});if(x.paletteVersion!==6){
+const calmMap={"#FF4F87":"#EFA5C8","#FFD400":"#F3B8D2","#35C759":"#E99ABB","#00C2FF":"#F7C6D7","#9B5DE5":"#EFAED2","#FF7A00":"#F6C7E2","#F15BB5":"#F1B0C8","#8D99AE":"#F7D9E6","#E8A7A6":"#F3B8D2","#F5CC55":"#F6C7E2","#B6C99A":"#EFA5C8","#9EC5CF":"#F7C6D7","#BCB1D9":"#EFAED2"};
 x.subjects.forEach(s=>{const c=String(s.color||"").toUpperCase();if(calmMap[c])s.color=calmMap[c]});
 const monthUse={};x.deadlines.forEach(task=>{const m=Math.max(0,Math.min(11,Number(String(task.date||"").slice(5,7))-1));const n=monthUse[m]||0;task.color=monthPalettes[m][n%monthPalettes[m].length];monthUse[m]=n+1});
-x.paletteVersion=5;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}
+x.paletteVersion=6;try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){}
 }return x}}catch(e){}return {subjects:defaults.map(x=>({...x})),deadlines:[],paletteVersion:2}}
 let state=load(), view=date(today()), selected=today(), editing=null, toastTimer;
 let calendarMode="month";
@@ -68,18 +68,18 @@ function renderLegend(){}
 function renderCalendar(){
 const y=view.getFullYear(),m=view.getMonth();$("#monthTitle").textContent=view.toLocaleDateString("en-IN",{month:"long",year:"numeric"});
 const monthPalettes=[
-["#AFC5B5","#9DB9A8","#8EAB99","#B8C9BD"],
-["#AFC4CC","#9BB7C2","#88A8B5","#B8CDD2"],
-["#B4C6A7","#9FB98F","#8DA77E","#C2D0B8"],
-["#C1C9A9","#AEBB91","#9BAA7D","#CDD4B9"],
-["#A9C4B6","#91B5A3","#7FA68F","#B8D0C2"],
-["#A6C2BE","#8FB5B0","#7BA39E","#B9D0CB"],
-["#A9BBD0","#91A9C3","#7E98B5","#BDCADB"],
-["#C5BEAA","#B1A98F","#9D967D","#D2CBB9"],
-["#B7C4AE","#A2B495","#8FA380","#C5D0BB"],
-["#AEC5BE","#97B7AE","#83A79D","#BED1C9"],
-["#AFC5B6","#98B8A5","#84A88F","#BED1C3"],
-["#B1C7C1","#9BBAB1","#86A99F","#C0D2CC"]
+["#F8CFE0","#F3B8D2","#EFA5C8","#F7D9E6"],
+["#F7C4D8","#F0AFCB","#E99ABB","#F6D2E1"],
+["#F8D0DC","#F2B6CD","#EBA2C1","#F7DCE5"],
+["#F5C5DF","#EFAED2","#E99AC7","#F4D5E8"],
+["#F8C9D9","#F1B0C8","#E99BBB","#F6D7E2"],
+["#F6C7E2","#EFAED6","#E69BCB","#F4D5E9"],
+["#F7C6D7","#F0A9C4","#E894B6","#F5D4E0"],
+["#F6CBE0","#EFB4D2","#E69FC7","#F5D9E9"],
+["#F8D0E4","#F1B8D7","#EAA3CC","#F6DCEC"],
+["#F6C5D8","#EFAAC8","#E795B9","#F4D4E0"],
+["#F7C9E1","#F0AED2","#E89AC7","#F5D7E8"],
+["#F6C8D9","#EEA9C5","#E793B5","#F4D4DF"]
 ];
 const monthTone=monthPalettes[m];const panel=$(".calendar-panel");panel.style.setProperty("--month-color",monthTone[0]);panel.style.setProperty("--month-accent",monthTone[1]);panel.style.setProperty("--month-deep",monthTone[2]);panel.style.setProperty("--month-ink",monthTone[3]);panel.dataset.month=String(m);
 const first=new Date(y,m,1,12),offset=(first.getDay()+6)%7,start=new Date(y,m,1-offset,12),daysInMonth=new Date(y,m+1,0,12).getDate(),totalCells=Math.ceil((offset+daysInMonth)/7)*7,grid=$("#calendarGrid");grid.innerHTML="";grid.style.gridTemplateRows="repeat("+(totalCells/7)+",minmax(0,1fr))";
@@ -137,7 +137,7 @@ $("#addDeadlineBtn").addEventListener("click",()=>openDeadline());
 $("#closeDayNote").addEventListener("click",()=>$("#dayNoteDialog").close());
 $("#dayNoteDialog").addEventListener("click",e=>{if(e.target===$("#dayNoteDialog"))$("#dayNoteDialog").close()});
 // Quick capture: one scribbled line per task, with a date and an individual colour.
-const quickPalette=["#AFC5B5","#9DB9A8","#8EAB99","#B8C9BD","#AFC4CC","#9BB7C2","#88A8B5","#B8CDD2","#B4C6A7","#9FB98F","#8DA77E","#C2D0B8","#C1C9A9","#AEBB91","#9BAA7D","#CDD4B9","#A9C4B6","#91B5A3","#7FA68F","#B8D0C2","#A6C2BE","#8FB5B0","#7BA39E","#B9D0CB","#A9BBD0","#91A9C3","#7E98B5","#BDCADB","#C5BEAA","#B1A98F","#9D967D","#D2CBB9"];
+const quickPalette=["#F8CFE0","#F3B8D2","#EFA5C8","#F7D9E6","#F7C4D8","#F0AFCB","#E99ABB","#F6D2E1","#F8D0DC","#F2B6CD","#EBA2C1","#F7DCE5","#F5C5DF","#EFAED2","#E99AC7","#F4D5E8","#F8C9D9","#F1B0C8","#E99BBB","#F6D7E2","#F6C7E2","#EFAED6","#E69BCB","#F4D5E9","#F7C6D7","#F0A9C4","#E894B6","#F5D4E0","#F6CBE0","#EFB4D2","#E69FC7","#F5D9E9"];
 let quickRows=[];
 function parseQuickLine(raw,index){
 const monthMap={jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
